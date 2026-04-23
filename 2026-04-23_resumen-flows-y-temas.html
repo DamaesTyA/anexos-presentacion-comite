@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumen de Flows y agenda sesión 3 — TyA PRD · KT Partners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --space-xs:   4px;
+    --space-sm:   8px;
+    --space-md:  16px;
+    --space-lg:  24px;
+    --space-xl:  32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+    --space-4xl: 96px;
+
+    --bg:          oklch(0.975 0.004 265);
+    --surface:     oklch(0.998 0.002 265);
+    --border:      oklch(0.905 0.008 265);
+    --border2:     oklch(0.835 0.014 265);
+    --text:        oklch(0.150 0.014 265);
+    --muted:       oklch(0.490 0.010 265);
+    --muted2:      oklch(0.655 0.008 265);
+    --blue:        oklch(0.460 0.200 265);
+    --blue-dim:    oklch(0.958 0.018 265);
+    --blue-border: oklch(0.800 0.085 265);
+    --violet:      oklch(0.500 0.175 295);
+    --violet-dim:  oklch(0.955 0.016 295);
+    --green:       oklch(0.530 0.172 145);
+    --green-dim:   oklch(0.960 0.040 145);
+    --green-border:oklch(0.790 0.080 145);
+    --yellow:      oklch(0.640 0.165 80);
+    --yellow-dim:  oklch(0.960 0.050 80);
+    --yellow-border:oklch(0.790 0.080 80);
+    --red:         oklch(0.530 0.210 25);
+    --red-dim:     oklch(0.960 0.035 25);
+    --red-border:  oklch(0.800 0.090 25);
+
+    --font-display: 'Exo 2', system-ui, sans-serif;
+    --font-body:    'Mulish', system-ui, sans-serif;
+    --font-mono:    'SF Mono', 'Fira Code', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Shell ── */
+  .shell {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--space-3xl) var(--space-4xl);
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-3xl);
+  }
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .topbar-pip {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  .topbar-org {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topbar-right {
+    font-size: 12px;
+    color: var(--muted2);
+    font-weight: 500;
+  }
+
+  /* ── Hero ── */
+  .hero { margin-bottom: var(--space-3xl); }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-bottom: var(--space-md);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 4.5vw, 54px);
+    font-weight: 900;
+    letter-spacing: -.03em;
+    line-height: 1.04;
+    margin-bottom: var(--space-lg);
+    color: var(--text);
+  }
+  .hero-title .accent { color: var(--blue); }
+  .hero-desc {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 640px;
+    line-height: 1.72;
+    font-weight: 400;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .hero-meta b { color: var(--text); font-weight: 700; }
+
+  /* ── Stat strip ── */
+  .stat-strip {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: var(--space-3xl);
+    background: var(--surface);
+  }
+  .stat-cell {
+    flex: 1;
+    padding: var(--space-lg) var(--space-xl);
+    border-right: 1px solid var(--border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -.04em;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  .stat-num.blue   { color: var(--blue); }
+  .stat-num.green  { color: var(--green); }
+  .stat-num.yellow { color: var(--yellow); }
+  .stat-num.red    { color: var(--red); }
+  .stat-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--muted);
+  }
+
+  /* ── Section ── */
+  .section { margin-bottom: var(--space-3xl); scroll-margin-top: var(--space-lg); }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--text);
+    flex-wrap: wrap;
+  }
+  .sec-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+  }
+  .sec-sub {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted2);
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--space-lg) var(--space-xl);
+    margin-bottom: var(--space-3xl);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm) var(--space-xl);
+    font-size: 13px;
+  }
+  .toc a {
+    color: var(--text);
+    display: flex;
+    gap: var(--space-sm);
+    padding: 4px 0;
+  }
+  .toc a:hover { color: var(--blue); text-decoration: none; }
+  .toc-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--blue);
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── Tables ── */
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--surface);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .tbl thead tr { background: oklch(0.950 0.006 265); }
+  .tbl th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 13px var(--space-md);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tbody tr:hover td { background: oklch(0.986 0.003 265); }
+  .tbl td.col-num {
+    font-family: var(--font-display);
+    font-weight: 900;
+    color: var(--muted2);
+    font-size: 12px;
+    width: 40px;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: oklch(0.930 0.022 265);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: oklch(0.400 0.220 265);
+  }
+
+  /* ── Pills ── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .pill::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pill-ok   { background: var(--green-dim);   color: var(--green);  border: 1px solid var(--green-border); }
+  .pill-ok::before   { background: var(--green); }
+  .pill-miss { background: var(--red-dim);     color: var(--red);    border: 1px solid var(--red-border); }
+  .pill-miss::before { background: var(--red); }
+  .pill-warn { background: var(--yellow-dim);  color: var(--yellow); border: 1px solid var(--yellow-border); }
+  .pill-warn::before { background: var(--yellow); }
+  .pill-info { background: var(--blue-dim);    color: var(--blue);   border: 1px solid var(--blue-border); }
+  .pill-info::before { background: var(--blue); }
+  .pill-violet { background: var(--violet-dim); color: var(--violet); border: 1px solid oklch(0.800 0.085 295); }
+  .pill-violet::before { background: var(--violet); }
+
+  /* ── Integration panels ── */
+  .integ-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+  .integ-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--space-lg);
+  }
+  .integ-panel-hd {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .dir-tag {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .sf-ek     { background: var(--blue-dim);   color: var(--blue); }
+  .ek-sf     { background: var(--violet-dim); color: var(--violet); }
+  .sf-side   { background: var(--green-dim);  color: var(--green); }
+  .mkt-tag   { background: var(--yellow-dim); color: var(--yellow); }
+  .ttk-tag   { background: var(--red-dim);    color: var(--red); }
+  .integ-row {
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .integ-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .integ-cls  { font-weight: 600; font-size: 13px; }
+  .integ-note { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .integ-tags { margin-top: var(--space-xs); display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    background: oklch(0.940 0.007 265);
+    color: var(--muted);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── Gap blocks ── */
+  .gap-cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    align-items: start;
+  }
+  .gap-cols.four { grid-template-columns: repeat(2, 1fr); }
+  .gap-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--space-lg);
+  }
+  .gap-block-hd {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .gap-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .gap-entry {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .gap-entry:last-child { border-bottom: none; padding-bottom: 0; }
+  .gap-name { font-size: 13px; font-weight: 600; }
+  .gap-hint { font-size: 12px; color: var(--muted2); margin-top: 3px; line-height: 1.5; }
+  .gap-block-time {
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    background: var(--blue-dim);
+    color: var(--blue);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: auto;
+  }
+
+  /* ── Recs ── */
+  .rec-list {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .rec-item {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: var(--space-md);
+    align-items: start;
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--border);
+  }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-num {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1;
+    padding-top: 2px;
+    opacity: 0.45;
+  }
+  .rec-text { font-size: 13.5px; line-height: 1.6; }
+  .rec-text strong { font-weight: 700; }
+  .rec-text span {
+    color: var(--muted);
+    font-size: 12.5px;
+    display: block;
+    margin-top: 5px;
+    line-height: 1.55;
+  }
+
+  /* ── Simple step list ── */
+  .step-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--space-lg) var(--space-xl);
+  }
+  .step-item {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: var(--space-md);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: baseline;
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-when {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  /* ── Intro note / callout ── */
+  .intro-note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+  }
+  .callout {
+    background: var(--blue-dim);
+    border: 1px solid var(--blue-border);
+    border-radius: 10px;
+    padding: var(--space-md) var(--space-lg);
+    font-size: 13px;
+    line-height: 1.65;
+    color: oklch(0.350 0.120 265);
+    margin-bottom: var(--space-md);
+  }
+  .callout-hd {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+
+  /* ── SQL block ── */
+  pre.sql {
+    background: oklch(0.950 0.006 265);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: oklch(0.280 0.080 265);
+    overflow-x: auto;
+    margin-top: var(--space-sm);
+    line-height: 1.55;
+  }
+
+  /* ── Subheading inside gap-block ── */
+  .gap-subs {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .gap-subs ol, .gap-subs ul {
+    padding-left: 18px;
+    margin-top: 4px;
+  }
+  .gap-subs li {
+    margin-bottom: 4px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted2);
+    line-height: 1.75;
+  }
+  .footer b { color: var(--muted); font-weight: 700; }
+  .footer ul { list-style: none; padding: 0; margin-top: var(--space-sm); }
+  .footer li { padding: 2px 0; }
+
+  @media (max-width: 860px) {
+    .shell        { padding: 0 var(--space-md) var(--space-3xl); }
+    .integ-wrap   { grid-template-columns: 1fr; }
+    .gap-cols     { grid-template-columns: 1fr; }
+    .stat-strip   { flex-wrap: wrap; }
+    .stat-cell    { min-width: 140px; border-bottom: 1px solid var(--border); }
+    .hero-title   { font-size: clamp(30px, 8vw, 42px); }
+    .toc          { grid-template-columns: 1fr; }
+    .step-item    { grid-template-columns: 1fr; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-pip"></div>
+      <span class="topbar-org">ProContacto · TyA PRD · KT Partners</span>
+    </div>
+    <span class="topbar-right">2026-04-23</span>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Transferencia de conocimiento · Sesión 3 de 5 · Preparación</div>
+    <h1 class="hero-title">Resumen de Flows<br><span class="accent">y agenda sesión 3</span></h1>
+    <p class="hero-desc">
+      Panorama de los 171 flows del org TYA y agenda de la sesión 3 de 5, enfocada en Cuentas y Oportunidades.
+    </p>
+    <div class="hero-meta">
+      <span><b>Autor:</b> ProContacto</span>
+      <span><b>Fuente:</b> metadata del org <code>tya-prd</code> + notas de sesiones previas</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <a href="#s1"><span class="toc-num">01</span> Distribución por dominio</a>
+    <a href="#s2"><span class="toc-num">02</span> Top 15 flows a repasar</a>
+    <a href="#s3"><span class="toc-num">03</span> Flows por integración externa</a>
+    <a href="#s4"><span class="toc-num">04</span> Flows de aprobación</a>
+    <a href="#s5"><span class="toc-num">05</span> Temas a tratar</a>
+    <a href="#s6"><span class="toc-num">06</span> Tickets pendientes</a>
+    <a href="#s7"><span class="toc-num">07</span> Preguntas abiertas</a>
+    <a href="#s8"><span class="toc-num">08</span> Próximos pasos</a>
+  </nav>
+
+  <!-- Stat strip -->
+  <div class="stat-strip">
+    <div class="stat-cell">
+      <div class="stat-num blue">171</div>
+      <div class="stat-lbl">Flows totales</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num green">49</div>
+      <div class="stat-lbl">Flows sobre Lead</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num yellow">18</div>
+      <div class="stat-lbl">Enrutamiento por desarrollo</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num red">4</div>
+      <div class="stat-lbl">Tickets críticos</div>
+    </div>
+  </div>
+
+  <!-- Resumen ejecutivo -->
+  <div class="callout">
+    <div class="callout-hd">Resumen ejecutivo</div>
+    La lógica de Lead se concentra principalmente en los flows. Hay algunos con hallazgos técnicos que vale la pena validar en conjunto: <code>Reasignacion_de_prospecto</code> (T26), <code>Reasignaci_n_de_prospectos_PROMOCI_N</code>, <code>Progreso_CYT</code> y <code>Prueba_CyT</code> (a revisar su estado). Agenda confirmada: Cuentas (~5–10 min) + Oportunidades (~40 min) con cotizaciones, listas de precios, productos y objetos custom tipo "Stone House".
+  </div>
+
+  <!-- 1. Distribución -->
+  <div class="section" id="s1">
+    <div class="sec-head">
+      <span class="sec-title">1 · Distribución de los 171 flows por dominio</span>
+      <span class="sec-sub">4 dominios funcionales</span>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Dominio</th>
+          <th style="width:120px">Cantidad</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Lead / Prospecto</b></td>
+          <td><span class="pill pill-info">~49</span></td>
+          <td>Enrutamiento, asignación, perfilamiento, vigencia, lead scoring, actualización. Algunos agrupados por landing (RGIA, Promotor Externo, Broker) con oportunidad de consolidación.</td>
+        </tr>
+        <tr>
+          <td><b>Enrutamiento por desarrollo</b></td>
+          <td><span class="pill pill-warn">~18</span></td>
+          <td>Un flow por desarrollo (Adamar, Kulkana, Terrasoles, etc.) que asigna al asesor según <code>Fila_de_asesores__c</code>. <code>Enrutamiento_General</code> como fallback.</td>
+        </tr>
+        <tr>
+          <td><b>Integración externa</b></td>
+          <td><span class="pill pill-violet">~12</span></td>
+          <td>Enkontrol (EK), Armonía, OwnMind, Marketing Cloud, TikTok, Chatbot.</td>
+        </tr>
+        <tr>
+          <td><b>Administrativos / validación / checklist / aprobación</b></td>
+          <td><span class="pill pill-ok">~92</span></td>
+          <td>Resto: validaciones, notificaciones, checklist, aprobación de ajustes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2. Top 15 flows -->
+  <div class="section" id="s2">
+    <div class="sec-head">
+      <span class="sec-title">2 · Top 15 flows a repasar</span>
+      <span class="sec-sub">Priorizados por complejidad y criticidad</span>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Flow</th>
+          <th>Tipo</th>
+          <th>Dominio</th>
+          <th>Motivo de inclusión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-num">1</td>
+          <td><code>Reasignacion_de_prospecto</code></td>
+          <td>Scheduled</td>
+          <td>Lead</td>
+          <td><span class="pill pill-miss">Ticket T26</span> 1.776 líneas, 6 <code>recordLookups</code> sobre Lead sin paginación. <code>Too many query rows: 50001</code> en prd. Refactor a Batch Apex.</td>
+        </tr>
+        <tr>
+          <td class="col-num">2</td>
+          <td><code>Reasignaci_n_de_prospectos_PROMOCI_N</code></td>
+          <td>Scheduled</td>
+          <td>Lead</td>
+          <td><span class="pill pill-warn">A validar</span> Hermano del anterior. Probable mismo comportamiento.</td>
+        </tr>
+        <tr>
+          <td class="col-num">3</td>
+          <td><code>VigenciaProspectos</code></td>
+          <td>Scheduled/Auto</td>
+          <td>Lead</td>
+          <td>Vigencia por canal; relativamente simple pero con reglas específicas por canal digital.</td>
+        </tr>
+        <tr>
+          <td class="col-num">4</td>
+          <td>Lead Scoring / Elite Scoring</td>
+          <td>Record-Triggered</td>
+          <td>Lead</td>
+          <td>Flow extenso con 3 niveles (frío/cálido/caliente). Requiere tiempo de revisión conjunto. <span class="pill pill-info">Pendiente nombre</span></td>
+        </tr>
+        <tr>
+          <td class="col-num">5</td>
+          <td>CTRL-Eventos / control de eventos</td>
+          <td>Record-Triggered</td>
+          <td>Lead</td>
+          <td>Identificado como complejo, con varias condiciones y ramas. <span class="pill pill-info">Pendiente localizar</span></td>
+        </tr>
+        <tr>
+          <td class="col-num">6</td>
+          <td><code>Progreso_CYT</code></td>
+          <td>Record-Triggered</td>
+          <td>Credito_y_titulacion__c</td>
+          <td>418 líneas. Controla avance de etapas CyT — interactúa con EK vía <code>AvanzaEtapaENK</code>.</td>
+        </tr>
+        <tr>
+          <td class="col-num">7</td>
+          <td><code>Aprobaci_nFlujoAjusteDeVenta</code></td>
+          <td>Approval</td>
+          <td>Ajustes_de_venta__c</td>
+          <td>Aprobación de cambio de ubicación/esquema/titular. Flujo core de post-venta.</td>
+        </tr>
+        <tr>
+          <td class="col-num">8</td>
+          <td><code>Creacion_Expediente</code></td>
+          <td>Record-Triggered</td>
+          <td>Expediente__c</td>
+          <td>Crea <code>Expediente__c</code> al avanzar la oportunidad. Clave para KYC.</td>
+        </tr>
+        <tr>
+          <td class="col-num">9</td>
+          <td><code>CheckProductoVallarta</code></td>
+          <td>Screen/Sub-flow</td>
+          <td>Opportunity</td>
+          <td>Valida tipo de plan en Vallarta. <code>ConfiguracionEsquemas.Producto_Vallarta</code> con <code>Esquema_Id = 53</code>.</td>
+        </tr>
+        <tr>
+          <td class="col-num">10</td>
+          <td>Enrutamiento por desarrollo (×18)</td>
+          <td>Record-Triggered</td>
+          <td>Lead</td>
+          <td>Uno por desarrollo. Ver si hay oportunidad de consolidación.</td>
+        </tr>
+        <tr>
+          <td class="col-num">11</td>
+          <td>Duplicados por landing (RGIA, Promotor Externo, Broker)</td>
+          <td>Record-Triggered</td>
+          <td>Lead</td>
+          <td>Lógica similar entre distintas landings; posible consolidación a evaluar.</td>
+        </tr>
+        <tr>
+          <td class="col-num">12</td>
+          <td><code>Actualiza_Opp_en_Promocion_de_la_venta</code></td>
+          <td>Record-Triggered</td>
+          <td>Opportunity</td>
+          <td>Propaga cambios de promoción a la oportunidad.</td>
+        </tr>
+        <tr>
+          <td class="col-num">13</td>
+          <td><code>Crear_CYT</code></td>
+          <td>Record-Triggered</td>
+          <td>Opportunity</td>
+          <td>Crea <code>Credito_y_titulacion__c</code> al avanzar. Hand-off a proceso CyT.</td>
+        </tr>
+        <tr>
+          <td class="col-num">14</td>
+          <td><code>Expediente_UpdateEtapasOportunidad</code></td>
+          <td>Record-Triggered</td>
+          <td>Expediente__c</td>
+          <td>Propaga avance del expediente a la oportunidad.</td>
+        </tr>
+        <tr>
+          <td class="col-num">15</td>
+          <td><code>Prueba_CyT</code></td>
+          <td>—</td>
+          <td>CyT</td>
+          <td><span class="pill pill-info">A verificar</span> Verificar estado actual y necesidad de mantenerlo.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3. Flows por integración externa -->
+  <div class="section" id="s3">
+    <div class="sec-head">
+      <span class="sec-title">3 · Flows por integración externa</span>
+      <span class="sec-sub">5 integraciones · ~12 flows</span>
+    </div>
+    <div class="integ-wrap">
+
+      <div class="integ-panel">
+        <div class="integ-panel-hd"><span class="dir-tag sf-ek">EK</span> Enkontrol / Armonía</div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Armonia_Create_Case</code></div>
+          <div class="integ-note">Crea caso en Armonía desde SF</div>
+          <div class="integ-tags"><span class="tag">bidireccional</span></div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Armonia_Obtener_Caso</code></div>
+          <div class="integ-note">Consulta estado de caso en Armonía</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Route_from_Armonia_Mejorado</code></div>
+          <div class="integ-note">Recibe inputs desde Armonía</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Route_to_Armonia_Mejorado</code></div>
+          <div class="integ-note">Envía información a Armonía</div>
+        </div>
+        <div class="integ-row" style="border-top: 1px solid var(--border); margin-top: 8px; padding-top: 12px;">
+          <div class="integ-note" style="margin-top:0">
+            EK es el sistema central. Integración bidireccional REST. Endpoint: <code>http://nwotb.tya.com.mx:3315/api/services</code>. Credenciales en <code>Credenciales__c</code> registro <em>Integracion</em>.
+          </div>
+        </div>
+      </div>
+
+      <div class="integ-panel">
+        <div class="integ-panel-hd"><span class="dir-tag sf-side">OwnMind</span> Asignación de leads</div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Actualizar_desarrollo_leads_Ownimd</code></div>
+          <div class="integ-note">Actualiza desarrollo en leads desde OwnMind</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Flujo_temporal_asignacion_ownmind</code></div>
+          <div class="integ-note">Asignación temporal · OwnMind</div>
+          <div class="integ-tags"><span class="tag">temporal</span></div>
+        </div>
+      </div>
+
+      <div class="integ-panel">
+        <div class="integ-panel-hd"><span class="dir-tag mkt-tag">MKT</span> Marketing Cloud</div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Notificaci_n_lead_mkt_cloud_para_asesora_digital</code></div>
+          <div class="integ-note">Notifica asesora digital sobre nuevo lead MKT</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Prospecto_Celular_MKT</code></div>
+          <div class="integ-note">Crea prospecto desde celular MKT</div>
+        </div>
+        <div class="integ-row" style="border-top: 1px solid var(--border); margin-top: 8px; padding-top: 12px;">
+          <div class="integ-note" style="margin-top:0">
+            Desde landings y campañas. Origen probable de varios campos informativos en Lead.
+          </div>
+        </div>
+      </div>
+
+      <div class="integ-panel">
+        <div class="integ-panel-hd"><span class="dir-tag ttk-tag">TikTok</span> Landing pages</div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>asignacion_campa_a_formulario_tiktok</code></div>
+          <div class="integ-note">Asigna campaña desde formulario TikTok</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Asignacion_de_promotor_externo_por_landing</code></div>
+          <div class="integ-note">Asigna promotor externo por landing</div>
+        </div>
+        <div class="integ-row" style="border-top: 1px solid var(--border); margin-top: 8px; padding-top: 12px;">
+          <div class="integ-note" style="margin-top:0">
+            Origen de los flows agrupados por landing.
+          </div>
+        </div>
+      </div>
+
+      <div class="integ-panel" style="grid-column: 1 / -1;">
+        <div class="integ-panel-hd"><span class="dir-tag ek-sf">Chatbot</span> Prospección web</div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>Chatbot_promocion_digital_Generar_prospecto</code></div>
+          <div class="integ-note">Crea prospecto desde chatbot web</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>_Obtener_prototipos</code></div>
+          <div class="integ-note">Sub-flow · obtiene prototipos</div>
+        </div>
+        <div class="integ-row">
+          <div class="integ-cls"><code>_Obtener_respuestas</code></div>
+          <div class="integ-note">Sub-flow · obtiene respuestas</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. Flows de aprobación -->
+  <div class="section" id="s4">
+    <div class="sec-head">
+      <span class="sec-title">4 · Flows de aprobación</span>
+      <span class="sec-sub">3 procesos activos</span>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Flow</th>
+          <th>Objeto</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Aprobaci_nFlujoAjusteDeVenta</code></td>
+          <td><code>Ajustes_de_venta__c</code></td>
+          <td>Cambio ubicación/esquema/titular.</td>
+        </tr>
+        <tr>
+          <td><code>Aprobaci_n_de_reporte_de_garant_a</code></td>
+          <td><code>Reportes_de_garantia__c</code></td>
+          <td>Post-venta.</td>
+        </tr>
+        <tr>
+          <td><code>Aprobacion_de_extension_de_vigencia</code></td>
+          <td><code>Lead</code></td>
+          <td>Extensión de vigencia de prospecto.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. Temas para tratar mañana -->
+  <div class="section" id="s5">
+    <div class="sec-head">
+      <span class="sec-title">5 · Temas a tratar en la próxima sesión</span>
+      <span class="sec-sub">4 subtemas · Cuentas · Oportunidades · Analytics · Pendiente</span>
+    </div>
+    <div class="gap-cols four">
+
+      <div class="gap-block">
+        <div class="gap-block-hd">
+          <div class="gap-dot" style="background:var(--blue)"></div>
+          5.1 · Cuentas
+          <span class="gap-block-time">~5–10 min</span>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Dimensión del problema</div>
+          <div class="gap-hint">335 campos custom en <code>Account</code> según exploración del repo. Hipótesis: ~181 son del acelerador y candidatos a limpieza.</div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Consulta al equipo</div>
+          <div class="gap-hint"><b>¿Cuál es el subconjunto realmente usado?</b></div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Pregunta abierta</div>
+          <div class="gap-hint">¿Hubo separación persona física / persona moral a nivel layout o record type? ¿Cómo se manejan cuentas de brokers vs clientes finales?</div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Referencias</div>
+          <div class="gap-hint"><code>/Documentación Partner Valtech/Diseño Técnico TyA.pdf</code> + <code>Diccionario de datos - Dipisa - Campos Cuentas.csv</code>.</div>
+        </div>
+      </div>
+
+      <div class="gap-block">
+        <div class="gap-block-hd">
+          <div class="gap-dot" style="background:var(--violet)"></div>
+          5.2 · Oportunidades
+          <span class="gap-block-time">~40 min</span>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Dimensión</div>
+          <div class="gap-hint">429 campos custom en <code>Opportunity</code>.</div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Subtemas a cubrir</div>
+          <div class="gap-subs">
+            <ol>
+              <li><b>Ciclo de vida de una Opportunity</b> — etapas, subetapas, criterios de avance.</li>
+              <li><b>Cotizaciones (<code>Quote</code>)</b> — ciclo de aprobación, <code>Promocion_de_la_Venta__c</code>, <code>Catalogo_de_promocion__c</code>.</li>
+              <li><b>Listas de precios y productos</b> — <code>Product2</code>, <code>Pricebook2</code>, <code>Inventario__c</code>.</li>
+              <li><b>Objeto custom "Stone House"</b> — mencionado al final de la sesión 2. Confirmar API name.</li>
+              <li><b>Crédito y titulación (<code>Credito_y_titulacion__c</code>)</b> — <code>Etapa_Actual__c</code>, <code>Etapa_Siguiente__c</code>, avance desde EK (<code>AvanzaEtapaENK</code>).</li>
+              <li><b>Ajustes de venta (<code>Ajustes_de_venta__c</code>)</b> — 3 record types (Ubicación, Esquema, Titular) con triggers dedicados.</li>
+              <li><b>Callouts SF→EK</b> — <code>CambioEtapa</code>, <code>CambioEsquemaENK</code>, <code>EnvioPlanPago</code>, <code>OportunidadCalloutChain</code> (Queueable).</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="gap-block">
+        <div class="gap-block-hd">
+          <div class="gap-dot" style="background:var(--yellow)"></div>
+          5.3 · CRM Analytics
+          <span class="gap-block-time">A revisar</span>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Pregunta concreta</div>
+          <div class="gap-hint">¿Podemos listar los reportes/datasets de CRM Analytics que originaron campos custom en Lead/Account/Opportunity?</div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Hipótesis</div>
+          <div class="gap-hint">Parte de los campos informativos podrían corresponder a reportes solicitados en su momento donde los datos nunca se cargaron.</div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Limitación</div>
+          <div class="gap-hint">Los dashboards/datasets <b>no están versionados en el repo</b> — requiere agregar <code>WaveApplication</code>, <code>WaveDashboard</code>, <code>WaveDataset</code> al package.xml.</div>
+        </div>
+      </div>
+
+      <div class="gap-block">
+        <div class="gap-block-hd">
+          <div class="gap-dot" style="background:var(--red)"></div>
+          5.4 · Campo Comentarios
+          <span class="gap-block-time">Pendiente</span>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name"><code>Comentarios_del_prospecto_en_la_cita__c</code></div>
+          <div class="gap-hint">Se mencionó en sesión 2 la posibilidad de registros con data. Validación en curso.</div>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Query de validación</div>
+          <pre class="sql">SELECT COUNT(Id) total,
+       COUNT(Comentarios_del_prospecto_en_la_cita__c) con_data
+FROM Lead</pre>
+        </div>
+        <div class="gap-entry">
+          <div class="gap-name">Origen sospechado</div>
+          <div class="gap-hint">Landing de Marketing Cloud post-visita, con tasa de respuesta muy baja. Se resuelve el jueves como parte del mapeo trigger→flow. <span class="pill pill-info">Pendiente</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 6. Tickets pendientes -->
+  <div class="section" id="s6">
+    <div class="sec-head">
+      <span class="sec-title">6 · Tickets pendientes relevantes</span>
+      <span class="sec-sub">879 h totales · referencia</span>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:70px">Ticket</th>
+          <th>Descripción</th>
+          <th style="width:70px">Horas</th>
+          <th style="width:60px">Fase</th>
+          <th>Relación con flows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>T26</code></td>
+          <td>Reasignación de Prospecto (Too many query rows)</td>
+          <td>50 h</td>
+          <td><span class="pill pill-info">1</span></td>
+          <td>Refactor <code>Reasignacion_de_prospecto</code></td>
+        </tr>
+        <tr>
+          <td><code>T174</code></td>
+          <td>CPU time limit en flujo de prospecto</td>
+          <td>58 h</td>
+          <td><span class="pill pill-info">1</span></td>
+          <td>49 flows sobre Lead + <code>Service_OportunidadTrigger</code></td>
+        </tr>
+        <tr>
+          <td><code>T76</code></td>
+          <td>Módulo de promociones</td>
+          <td>54 h</td>
+          <td><span class="pill pill-info">1</span></td>
+          <td><code>Promocion__c</code>, <code>Catalogo_de_promocion__c</code>, <code>Actualiza_Opp_en_Promocion_de_la_venta</code></td>
+        </tr>
+        <tr>
+          <td><code>T79</code></td>
+          <td>Reportes y tableros CRM Analytics en prd</td>
+          <td>60 h</td>
+          <td><span class="pill pill-info">1</span></td>
+          <td>Relacionado con campos informativos sin uso actual</td>
+        </tr>
+        <tr>
+          <td><code>T133</code></td>
+          <td>Envío de comisiones EK→SF</td>
+          <td>85 h</td>
+          <td><span class="pill pill-warn">2</span></td>
+          <td><code>CreacionComisiones.cls</code> — no es flow, pero impacta lógica de comisiones post-cierre</td>
+        </tr>
+        <tr>
+          <td><code>T143</code></td>
+          <td>Reversar etapas en CyT</td>
+          <td>68 h</td>
+          <td><span class="pill pill-warn">2</span></td>
+          <td><code>AvanzaEtapaENK</code> + <code>Progreso_CYT</code></td>
+        </tr>
+        <tr>
+          <td><code>T173</code></td>
+          <td>Ajustes de ventas desde Reservación</td>
+          <td>56 h</td>
+          <td><span class="pill pill-warn">2</span></td>
+          <td><code>Aprobaci_nFlujoAjusteDeVenta</code></td>
+        </tr>
+        <tr>
+          <td><code>T75</code></td>
+          <td>Nuevo formato oferta y contrato</td>
+          <td>88 h</td>
+          <td><span class="pill pill-violet">3</span></td>
+          <td><code>Call_FAD_WS</code> + contratos</td>
+        </tr>
+        <tr>
+          <td><code>T157</code></td>
+          <td>Funciones especiales Plaza Vallarta</td>
+          <td>88 h</td>
+          <td><span class="pill pill-violet">3</span></td>
+          <td><code>CheckProductoVallarta</code>, <code>ConfiguracionEsquemas.Producto_Vallarta</code> (esquema 53)</td>
+        </tr>
+        <tr>
+          <td><code>T154/170</code></td>
+          <td>Homologación Oportunidad/CyT + permisos de crédito</td>
+          <td>124 h</td>
+          <td><span class="pill pill-violet">3</span></td>
+          <td>Múltiples flows y trigger <code>CreditoyTitulacionTrigger</code></td>
+        </tr>
+        <tr>
+          <td><code>T146</code></td>
+          <td>Integración Ecommerce → SF</td>
+          <td>148 h</td>
+          <td><span class="pill pill-violet">3</span></td>
+          <td>Flows de ingreso de prospectos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 7. Preguntas abiertas -->
+  <div class="section" id="s7">
+    <div class="sec-head">
+      <span class="sec-title">7 · Preguntas abiertas</span>
+      <span class="sec-sub">7 puntos a validar</span>
+    </div>
+    <div class="rec-list">
+      <div class="rec-item">
+        <span class="rec-num">01</span>
+        <div class="rec-text">
+          <strong>Consolidación de flows por landing.</strong>
+          <span>Existe un flow por cada landing (RGIA, Promotor Externo, Broker) con lógica casi idéntica. ¿Hay motivo funcional para mantenerlos separados o podemos unificar?</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <span class="rec-num">02</span>
+        <div class="rec-text">
+          <strong>Control de eventos / CTRL-Eventos.</strong>
+          <span>Confirmar nombre exacto del flow en el repo para documentarlo.</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <span class="rec-num">03</span>
+        <div class="rec-text">
+          <strong>Lead Scoring.</strong>
+          <span>¿Nombre oficial del flow? ¿Está declarado en un solo flow o repartido en varios sub-flows?</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <span class="rec-num">04</span>
+        <div class="rec-text">
+          <strong>Encuesta de perfilamiento.</strong>
+          <span>En sesión 2 confirmaron que ya no bloquea avance. ¿Hay plan de deprecar el flujo de perfilamiento o se mantiene por datos históricos?</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <span class="rec-num">05</span>
+        <div class="rec-text">
+          <strong>Automatización de visibilidad para comisiones.</strong>
+          <span>¿En qué flow/trigger se crea la regla de colaboración de solo lectura para promotor/asesor digital? Necesito ubicarlo para documentarlo.</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <span class="rec-num">06</span>
+        <div class="rec-text">
+          <strong>Flow <code>Prueba_CyT</code> activo en prd.</strong>
+          <span>¿Podemos desactivarlo esta semana o hay dependencia?</span>
+        </div>
+      </div>
+      <div class="rec-item">
+        <span class="rec-num">07</span>
+        <div class="rec-text">
+          <strong>Número total estimado de flows a eliminar/deprecar</strong>
+          <span>Tras la limpieza de campos.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Próximos pasos -->
+  <div class="section" id="s8">
+    <div class="sec-head">
+      <span class="sec-title">8 · Próximos pasos</span>
+      <span class="sec-sub">Plan semana + siguiente</span>
+    </div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-when">Hoy EOD</div>
+        <div>Comparto este resumen con el equipo. <span class="pill pill-ok">✅ Hecho</span></div>
+      </div>
+      <div class="step-item">
+        <div class="step-when">Jueves AM</div>
+        <div>Presento el mapeo "qué flujo detona cada trigger" con tabla completa y la verificación del campo <code>Comentarios_del_prospecto_en_la_cita__c</code>.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-when">Jueves</div>
+        <div>Repaso los 15 flows de la tabla §2 y cerramos dudas.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-when">Esta semana</div>
+        <div>Consolido el listado de campos a eliminar/ajustar a partir del análisis de uso sobre el org.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-when">Próxima semana</div>
+        <div>Sesión interna para rediseño de sección de Lead.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p style="font-style: italic;">Cualquier feedback previo a la reunión lo integramos antes del inicio de la sesión 3.</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SIM TyA — Flujos de Ingesta Interactivo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f7f7f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px}
+.hint{font-size:13px;color:#888;margin-bottom:6px;text-align:center}.hint b{color:#2F5496}
+.legend{display:flex;gap:18px;margin-bottom:12px;font-size:12px;color:#555;flex-wrap:wrap;justify-content:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.lg-ok{background:#16A34A}.lg-en{background:#CA8A04}.lg-st{background:#DC2626}
+.diagram-wrap{max-width:1100px;width:100%;background:#fff;border-radius:14px;border:1px solid #e5e5e0;box-shadow:0 4px 24px rgba(0,0,0,0.06);padding:16px;overflow:auto}
+.diagram-wrap svg{width:100%;height:auto}
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,17,23,0.5);backdrop-filter:blur(5px);z-index:100;justify-content:center;align-items:flex-start;padding:40px 24px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:640px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.2);animation:mIn 0.2s ease}
+@keyframes mIn{from{opacity:0;transform:translateY(16px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.mh{padding:24px 28px 16px;border-bottom:1px solid #eee;position:relative}
+.mh h2{font-size:19px;font-weight:700;color:#1a1a1a;letter-spacing:-0.3px;padding-right:40px}
+.mh .dsid{font-size:11px;color:#999;font-family:'JetBrains Mono',monospace;margin-top:4px}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px;margin-top:6px}
+.b-op{background:#DCFCE7;color:#14532D}
+.b-en{background:#FEF3C7;color:#713F12}
+.b-stop{background:#FEE2E2;color:#7F1D1D}
+.cbtn{position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:7px;border:1px solid #eee;background:#fafafa;cursor:pointer;font-size:16px;color:#999;display:flex;align-items:center;justify-content:center}.cbtn:hover{background:#eee;color:#333}
+.mb{padding:20px 28px 28px}
+.sec{margin-bottom:16px}.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#aaa;margin-bottom:5px}.sv{font-size:13px;color:#555;line-height:1.6}.sv strong{color:#333;font-weight:600}
+.mono{font-family:'JetBrains Mono',monospace;font-size:11px;background:#f7f7f5;border:1px solid #eee;border-radius:7px;padding:10px 14px;color:#666;word-break:break-all;white-space:pre-wrap;line-height:1.5}
+hr.d{border:none;border-top:1px solid #eee;margin:18px 0}
+.vpill{display:inline-flex;align-items:center;gap:5px;background:#e6f0fb;color:#2f5496;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;margin-right:8px}
+.dpill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:14px;font-size:12px;font-weight:600}
+.dp-s3{background:#475569;color:#fff}
+.dp-rc{background:#4F46E5;color:#fff}
+.dp-tbd{background:#64748B;color:#fff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vars-btn{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:#f7f7f5;border:1px solid #e5e5e0;border-radius:8px;cursor:pointer;font:500 13px 'DM Sans',sans-serif;color:#2f5496;transition:all 0.15s;margin-top:4px}
+.vars-btn:hover{background:#eef3fb;border-color:#c5d5ef}
+.vars-btn .arrow{transition:transform 0.2s}.vars-btn.open .arrow{transform:rotate(90deg)}
+.vars-table{display:none;margin-top:8px;border:1px solid #eee;border-radius:8px;overflow:hidden;max-height:400px;overflow-y:auto}
+.vars-table.show{display:block}
+.vars-table table{width:100%;border-collapse:collapse;font-size:11px}
+.vars-table th{background:#f7f7f5;padding:8px 10px;text-align:left;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;font-size:10px;position:sticky;top:0}
+.vars-table td{padding:6px 10px;border-top:1px solid #f0f0f0;color:#555}.vars-table tr:hover td{background:#fafafa}
+@media(max-width:700px){.g2{grid-template-columns:1fr}}
+</style></head><body>
+<p class="hint">Click en cualquier fila para ver detalle completo · <b>ESC</b> para cerrar</p>
+<div class="legend">
+  <span><i class="lg-ok"></i>Listos (8)</span>
+  <span><i class="lg-en"></i>En curso (4)</span>
+  <span><i class="lg-st"></i>Detenidos (2)</span>
+</div>
+<div class="diagram-wrap"><svg width="100%" viewBox="0 0 1000 930" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- TITULO -->
+<text x="500" y="28" text-anchor="middle" fill="#2F5496" font-family="Arial" font-size="20" font-weight="700">Flujos de ingesta de datos — SIM TyA</text>
+<text x="500" y="72" text-anchor="middle" fill="#999" font-family="Arial" font-size="10">Tierra y Armonía / RapidCanvas — Abril 2026 — Click en cada fila para ver detalle</text>
+
+<!-- HEADERS DE COLUMNAS -->
+<rect x="30" y="88" width="240" height="30" rx="4" fill="#2F5496"/>
+<text x="150" y="107" text-anchor="middle" fill="#fff" font-family="Arial" font-size="12" font-weight="500">Fuente de datos</text>
+<rect x="290" y="88" width="240" height="30" rx="4" fill="#2F5496"/>
+<text x="410" y="107" text-anchor="middle" fill="#fff" font-family="Arial" font-size="12" font-weight="500">Método de extracción</text>
+<rect x="550" y="88" width="140" height="30" rx="4" fill="#2F5496"/>
+<text x="620" y="107" text-anchor="middle" fill="#fff" font-family="Arial" font-size="12" font-weight="500">Frecuencia</text>
+<rect x="710" y="88" width="240" height="30" rx="4" fill="#2F5496"/>
+<text x="830" y="107" text-anchor="middle" fill="#fff" font-family="Arial" font-size="12" font-weight="500">Destino</text>
+
+<!-- FILA 1: DD360 (LISTO → S3) y=130 -->
+<rect x="30" y="130" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="148" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">DD360</text>
+<text x="150" y="162" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_02 · 96 variables</text>
+<rect x="290" y="130" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="148" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">Webhook push</text>
+<text x="410" y="162" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">Evento automático</text>
+<rect x="550" y="136" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="156" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Continua</text>
+<rect x="710" y="138" width="240" height="28" rx="14" fill="#475569"/>
+<text x="830" y="156" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">AWS S3</text>
+<line x1="270" y1="152" x2="288" y2="152" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="152" x2="548" y2="152" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="152" x2="708" y2="152" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="128" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('dd360')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 2: INEGI (LISTO → RapidCanvas) y=186 -->
+<rect x="30" y="186" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="204" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">INEGI</text>
+<text x="150" y="218" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_04 · 7 variables</text>
+<rect x="290" y="186" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="204" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">API REST + token</text>
+<text x="410" y="218" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">GET JSON · 5 municipios ZMG</text>
+<rect x="550" y="192" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="212" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Mensual</text>
+<rect x="710" y="194" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="212" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="208" x2="288" y2="208" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="208" x2="548" y2="208" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="208" x2="708" y2="208" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="184" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('inegi')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 3: SNIIV — Escrituración (LISTO → RapidCanvas) y=242 -->
+<rect x="30" y="242" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="260" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">SNIIV — Escrituración</text>
+<text x="150" y="274" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_08 · 11 variables</text>
+<rect x="290" y="242" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="260" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">API REST sin auth</text>
+<text x="410" y="274" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">GetRegistro · estado 14</text>
+<rect x="550" y="248" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="268" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Mensual</text>
+<rect x="710" y="250" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="268" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="264" x2="288" y2="264" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="264" x2="548" y2="264" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="264" x2="708" y2="264" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="240" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('sniiv_esc')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 4: SNIIV — Créditos (LISTO → RapidCanvas) y=298 -->
+<rect x="30" y="298" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="316" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">SNIIV — Créditos</text>
+<text x="150" y="330" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_09 · 17 variables</text>
+<rect x="290" y="298" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="316" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">API REST sin auth</text>
+<text x="410" y="330" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">GetFinanciamiento · estado 14</text>
+<rect x="550" y="304" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="324" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Mensual</text>
+<rect x="710" y="306" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="324" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="320" x2="288" y2="320" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="320" x2="548" y2="320" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="320" x2="708" y2="320" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="296" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('sniiv_cred')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 5: SNIIV — Demanda (LISTO → RapidCanvas) y=354 -->
+<rect x="30" y="354" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="372" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">SNIIV — Demanda</text>
+<text x="150" y="386" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_10 · 7 variables</text>
+<rect x="290" y="354" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="372" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">API REST sin auth</text>
+<text x="410" y="386" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">GetDemandaPotencial · 14</text>
+<rect x="550" y="360" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="380" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Mensual</text>
+<rect x="710" y="362" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="380" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="376" x2="288" y2="376" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="376" x2="548" y2="376" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="376" x2="708" y2="376" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="352" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('sniiv_dem')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 6: Softec DIME (EN CURSO → dual: S3 actual + RapidCanvas en ~1 sem) y=410 -->
+<rect x="30" y="410" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="150" y="428" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="12" font-weight="700">Softec DIME</text>
+<text x="150" y="442" text-anchor="middle" fill="#92400E" font-family="Arial" font-size="9">DS_EXT_01 · 32 variables</text>
+<rect x="290" y="410" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="410" y="426" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Legacy → cargados manualmente a S3</text>
+<text x="410" y="442" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Propuesta → Reenvío a RapidCanvas (~1 sem para liberar)</text>
+<rect x="550" y="416" width="140" height="32" rx="4" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="620" y="436" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Trimestral</text>
+<rect x="710" y="414" width="240" height="16" rx="8" fill="#475569"/>
+<text x="830" y="425" text-anchor="middle" fill="#fff" font-family="Arial" font-size="9" font-weight="600">AWS S3 (actual)</text>
+<rect x="710" y="434" width="240" height="16" rx="8" fill="#4F46E5"/>
+<text x="830" y="445" text-anchor="middle" fill="#fff" font-family="Arial" font-size="9" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="432" x2="288" y2="432" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="432" x2="548" y2="432" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="432" x2="708" y2="432" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="408" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('softec')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 7: CONAPO (LISTO → RapidCanvas) y=466 -->
+<rect x="30" y="466" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="484" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">CONAPO</text>
+<text x="150" y="498" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_03 · 29 variables</text>
+<rect x="290" y="466" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="484" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">XLSX desde portal</text>
+<text x="410" y="498" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">Descarga · URL fija</text>
+<rect x="550" y="472" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="492" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Anual</text>
+<rect x="710" y="474" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="492" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="488" x2="288" y2="488" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="488" x2="548" y2="488" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="488" x2="708" y2="488" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="464" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('conapo')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 8: ENIGH / IMCP (LISTO → RapidCanvas) y=522 -->
+<rect x="30" y="522" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="540" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">ENIGH / IMCP</text>
+<text x="150" y="554" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_05 · Consumo privado</text>
+<rect x="290" y="522" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="540" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">API INEGI (IMCP)</text>
+<text x="410" y="554" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">Proxy mensual consumo hogares</text>
+<rect x="550" y="528" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="548" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Mensual</text>
+<rect x="710" y="530" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="548" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="544" x2="288" y2="544" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="544" x2="548" y2="544" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="544" x2="708" y2="544" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="520" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('enigh')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 9: IMSS / IIEG (LISTO → RapidCanvas) y=578 -->
+<rect x="30" y="578" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="150" y="596" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="12" font-weight="700">IMSS / IIEG</text>
+<text x="150" y="610" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">DS_EXT_06,07 · 36 variables</text>
+<rect x="290" y="578" width="240" height="44" rx="6" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="410" y="596" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="11" font-weight="500">Portales MIDE / IIEG</text>
+<text x="410" y="610" text-anchor="middle" fill="#166534" font-family="Arial" font-size="9">Consulta manual</text>
+<rect x="550" y="584" width="140" height="32" rx="4" fill="#DCFCE7" stroke="#16A34A" stroke-width="0.5"/>
+<text x="620" y="604" text-anchor="middle" fill="#14532D" font-family="Arial" font-size="10" font-weight="500">Trimestral</text>
+<rect x="710" y="586" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="604" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="600" x2="288" y2="600" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="600" x2="548" y2="600" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="600" x2="708" y2="600" stroke="#16A34A" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="576" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('imss')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- DIVISOR ENTRE LISTOS Y EN CURSO -->
+<line x1="30" y1="630" x2="950" y2="630" stroke="#e5e5e0" stroke-width="1" stroke-dasharray="3 3"/>
+
+<!-- FILA 10: FlexMLS (EN CURSO → S3) y=634 -->
+<rect x="30" y="634" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="150" y="652" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="12" font-weight="700">FlexMLS</text>
+<text x="150" y="666" text-anchor="middle" fill="#92400E" font-family="Arial" font-size="9">DS_EXT_11 · 99 variables</text>
+<rect x="290" y="634" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="410" y="652" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="11" font-weight="500">En negociación</text>
+<text x="410" y="666" text-anchor="middle" fill="#92400E" font-family="Arial" font-size="9">Mientras tanto: carga manual a S3 (~1 sem para liberar)</text>
+<rect x="550" y="640" width="140" height="32" rx="4" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="620" y="660" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Semanal</text>
+<rect x="710" y="642" width="240" height="28" rx="14" fill="#475569"/>
+<text x="830" y="660" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">AWS S3</text>
+<line x1="270" y1="656" x2="288" y2="656" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="656" x2="548" y2="656" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="656" x2="708" y2="656" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="632" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('flexmls')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 11: Benchmark ×4 (EN CURSO → RapidCanvas) y=690 -->
+<rect x="30" y="690" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="150" y="708" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="12" font-weight="700">Benchmark ×4</text>
+<text x="150" y="722" text-anchor="middle" fill="#92400E" font-family="Arial" font-size="9">DS_INT_06 a 09 · 182 variables</text>
+<rect x="290" y="690" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="410" y="708" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="11" font-weight="500">Compartiremos credenciales</text>
+<text x="410" y="722" text-anchor="middle" fill="#92400E" font-family="Arial" font-size="9">Importación directa a RapidCanvas (~1 sem para liberar)</text>
+<rect x="550" y="696" width="140" height="32" rx="4" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="620" y="716" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Por evento</text>
+<rect x="710" y="698" width="240" height="28" rx="14" fill="#4F46E5"/>
+<text x="830" y="716" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">RapidCanvas</text>
+<line x1="270" y1="712" x2="288" y2="712" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="712" x2="548" y2="712" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="712" x2="708" y2="712" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="688" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('benchmark')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 12: Grupo Guía — Hubspot (EN CURSO → RapidCanvas) y=746 -->
+<rect x="30" y="746" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="150" y="764" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="12" font-weight="700">Grupo Guía — Hubspot</text>
+<text x="150" y="778" text-anchor="middle" fill="#92400E" font-family="Arial" font-size="9">DS_EXT_12 · Datos comerciales</text>
+<rect x="290" y="746" width="240" height="44" rx="6" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="410" y="762" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Legacy → Drive de Benchmark (~1 sem para liberar)</text>
+<text x="410" y="778" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Endpoint → API HubSpot (No determinado)</text>
+<rect x="550" y="752" width="140" height="32" rx="4" fill="#FEF3C7" stroke="#CA8A04" stroke-width="0.5"/>
+<text x="620" y="772" text-anchor="middle" fill="#713F12" font-family="Arial" font-size="10" font-weight="500">Por evento</text>
+<rect x="710" y="750" width="240" height="16" rx="8" fill="#4F46E5"/>
+<text x="830" y="761" text-anchor="middle" fill="#fff" font-family="Arial" font-size="9" font-weight="600">RapidCanvas (legacy)</text>
+<rect x="710" y="770" width="240" height="16" rx="8" fill="#64748B"/>
+<text x="830" y="781" text-anchor="middle" fill="#fff" font-family="Arial" font-size="9" font-weight="600">Por definir (endpoint)</text>
+<line x1="270" y1="768" x2="288" y2="768" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="530" y1="768" x2="548" y2="768" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<line x1="690" y1="768" x2="708" y2="768" stroke="#CA8A04" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="744" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('grupo_guia')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- DIVISOR ENTRE EN CURSO Y DETENIDOS -->
+<line x1="30" y1="798" x2="950" y2="798" stroke="#e5e5e0" stroke-width="1" stroke-dasharray="3 3"/>
+
+<!-- FILA 13: Ubicación GIS (DETENIDO → S3) y=802 -->
+<rect x="30" y="802" width="240" height="44" rx="6" fill="#FEE2E2" stroke="#DC2626" stroke-width="0.5"/>
+<text x="150" y="820" text-anchor="middle" fill="#7F1D1D" font-family="Arial" font-size="12" font-weight="700">Ubicación GIS</text>
+<text x="150" y="834" text-anchor="middle" fill="#991B1B" font-family="Arial" font-size="9">DS_INT_02 · Georreferencias</text>
+<text x="410" y="828" text-anchor="middle" fill="#DC2626" font-family="Arial" font-size="14" font-weight="500" opacity="0.5">— detenido —</text>
+<rect x="550" y="808" width="140" height="32" rx="4" fill="#FEE2E2" stroke="#DC2626" stroke-width="0.5"/>
+<text x="620" y="828" text-anchor="middle" fill="#7F1D1D" font-family="Arial" font-size="10" font-weight="500">Ad hoc</text>
+<rect x="710" y="810" width="240" height="28" rx="14" fill="#475569"/>
+<text x="830" y="828" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">AWS S3</text>
+<line x1="270" y1="824" x2="548" y2="824" stroke="#DC2626" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a)"/>
+<line x1="690" y1="824" x2="708" y2="824" stroke="#DC2626" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="800" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('gis')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+<!-- FILA 14: Reservas (DETENIDO → S3) y=858 -->
+<rect x="30" y="858" width="240" height="44" rx="6" fill="#FEE2E2" stroke="#DC2626" stroke-width="0.5"/>
+<text x="150" y="876" text-anchor="middle" fill="#7F1D1D" font-family="Arial" font-size="12" font-weight="700">Reservas</text>
+<text x="150" y="890" text-anchor="middle" fill="#991B1B" font-family="Arial" font-size="9">DS_INT_03 · 40 variables</text>
+<text x="410" y="884" text-anchor="middle" fill="#DC2626" font-family="Arial" font-size="14" font-weight="500" opacity="0.5">— detenido —</text>
+<rect x="550" y="864" width="140" height="32" rx="4" fill="#FEE2E2" stroke="#DC2626" stroke-width="0.5"/>
+<text x="620" y="884" text-anchor="middle" fill="#7F1D1D" font-family="Arial" font-size="10" font-weight="500">Ad hoc</text>
+<rect x="710" y="866" width="240" height="28" rx="14" fill="#475569"/>
+<text x="830" y="884" text-anchor="middle" fill="#fff" font-family="Arial" font-size="11" font-weight="600">AWS S3</text>
+<line x1="270" y1="880" x2="548" y2="880" stroke="#DC2626" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a)"/>
+<line x1="690" y1="880" x2="708" y2="880" stroke="#DC2626" stroke-width="1" marker-end="url(#a)"/>
+<rect class="hit" x="28" y="856" width="924" height="48" rx="6" fill="#5b8af5" opacity="0" style="cursor:pointer;transition:opacity 0.15s" onclick="openModal('reservas')" onmouseover="this.style.opacity=0.06" onmouseout="this.style.opacity=0"/>
+
+</svg></div>
+
+<div class="overlay" id="ov" onclick="if(event.target===this)closeModal()"><div class="modal" id="md"></div></div>
+
+<script>
+const D = {
+  "dd360":      {name:"DD360", id:"DS_EXT_02", sub:"Reporte inmobiliario", vars:96, badge:"op", estado:"Listo", destino:"s3", varKeys:["DS_EXT_02"], desc:"Reporte inmobiliario DD360: análisis de entorno, demografía, demanda/oferta vivienda, precios y absorción por zona.", method:"Webhook push", methodDetail:"DD360 envía evento automático que deposita reporte directo en S3.", endpoint:"Webhook configurado por DD360 — evento push directo a S3", auth:"Configuración webhook", formato:"JSON", freq:"Continua (por evento)", proposal:"Pipeline operativo — sin cambios.", consideraciones:"Si DD360 cambia payload, requiere ajuste en parser.", contacto:"DD360 / Monopolio — soporte técnico", dependencias:"Webhook configurado + bucket S3 receptor"},
+  "inegi":      {name:"INEGI", id:"DS_EXT_04", sub:"Población municipal ZMG", vars:7, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_04"], desc:"Población total por municipio ZMG vía API REST del Banco de Indicadores INEGI.", method:"API REST + token", methodDetail:"GET JSON con token gratuito. 5 requests por los 5 municipios ZMG.", endpoint:"GET https://www.inegi.org.mx/app/api/indicadores/\\ndesarrolladores/jsonxml/INDICATOR/1002000001/\\nes/{geo}/false/BISE/2.0/{token}?type=json\\n\\nGeos: 14039, 14120, 14098, 14101, 14097", auth:"Token INEGI (registro gratuito)", formato:"JSON", freq:"Mensual", proposal:"Lambda cron mensual: GET 5 municipios, JSON → CSV → RapidCanvas. Combinar con SNIIV y ENIGH/IMCP.", consideraciones:"API sin SLA. Token puede expirar. Indicador 1002000001 = Población Total.", contacto:"INEGI: inegi.org.mx/servicios/api_indicadores.html", dependencias:"Token INEGI vigente + Lambda Python"},
+  "sniiv_esc":  {name:"SNIIV — Escrituración", id:"DS_EXT_08", sub:"Registro de vivienda", vars:11, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_08"], desc:"Viviendas registradas (escrituradas) por municipio y año en Jalisco.", method:"API REST sin auth", methodDetail:"Endpoint público SEDATU. Sin autenticación.", endpoint:"GET https://sniiv.sedatu.gob.mx/api/CuboAPI/\\nGetRegistro/{años}/14/{mun}/anio,municipio\\n\\nMunicipios: 039, 120, 098, 101, 097", auth:"Sin autenticación", formato:"JSON", freq:"Mensual", proposal:"Lambda cron mensual. Mismo job que INEGI.", consideraciones:"API pública sin SLA.", contacto:"SNIIV/SEDATU: sniiv.sedatu.gob.mx", dependencias:"Lambda requests. Mismo job"},
+  "sniiv_cred": {name:"SNIIV — Créditos", id:"DS_EXT_09", sub:"Financiamiento", vars:17, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_09"], desc:"Créditos hipotecarios ejercidos por organismo, destino, modalidad y municipio.", method:"API REST sin auth", methodDetail:"Endpoint GetFinanciamiento.", endpoint:"GET https://sniiv.sedatu.gob.mx/api/CuboAPI/\\nGetFinanciamiento/{años}/14/{mun}/anio,municipio", auth:"Sin autenticación", formato:"JSON", freq:"Mensual", proposal:"Lambda cron mensual. Mismo job.", consideraciones:"Mismas que Escrituración.", contacto:"SNIIV/SEDATU", dependencias:"Mismo job Lambda"},
+  "sniiv_dem":  {name:"SNIIV — Demanda", id:"DS_EXT_10", sub:"Demanda potencial", vars:7, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_10"], desc:"Demanda potencial de vivienda por municipio, segmentada por UMA.", method:"API REST sin auth", methodDetail:"Devuelve todos los municipios del estado 14.", endpoint:"GET https://sniiv.sedatu.gob.mx/api/DemandaAPI/\\nGetDemandaPotencialMunicipal/{año}/{mes}/14", auth:"Sin autenticación", formato:"JSON", freq:"Mensual", proposal:"Lambda cron mensual. Filtrar 5 ZMG post-request.", consideraciones:"Devuelve todos los municipios — filtrar en procesamiento.", contacto:"SNIIV/SEDATU", dependencias:"Mismo job Lambda"},
+  "softec":     {name:"Softec DIME", id:"DS_EXT_01", sub:"Oferta inmobiliaria", vars:32, badge:"en", estado:"En curso", destino:"dual", destinoPills:[{label:"AWS S3 (actual)", class:"dp-s3"},{label:"RapidCanvas (~1 sem)", class:"dp-rc"}], varKeys:["DS_EXT_01"], desc:"Oferta inmobiliaria trimestral. Mystery shopper en 41 plazas. 32 variables core con variantes A/B/C. Alternativas: CDI (mensual), Softec App, DIME Online.", method:"Doble flujo en transición", methodDetail:"(1) Legacy: el XLSX llega por email a un buzón institucional de TyA y se sube a S3. (2) Propuesta: reenviar esos correos a un buzón que indique RapidCanvas — disponible en ~1 semana.", endpoint:"DIME Online: softec.com.mx/tienda-on-line/dime\\nCDI: softec.com.mx/cdi (mensual, día 16)\\nSoftec App: app.softec.com.mx", auth:"Credenciales suscripción Softec", formato:"XLSX", freq:"Trimestral (Mensual con CDI)", proposal:"Corto plazo: configurar reenvío automático del buzón TyA al buzón RapidCanvas para que el XLSX llegue directo (~1 semana). Mediano: migrar a CDI mensual. Recomendación: solicitar API enterprise.", consideraciones:"Una vez operativo el reenvío, evaluar si retiramos el flujo legacy a S3 o lo mantenemos como respaldo durante un periodo.", contacto:"Softec: info@softec.com.mx / 55 5063 8800", dependencias:"Suscripción activa + buzón TyA + buzón RapidCanvas + regla de reenvío"},
+  "conapo":     {name:"CONAPO", id:"DS_EXT_03", sub:"Demografía municipal", vars:29, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_03"], desc:"Proyecciones demográficas municipales 1990-2040.", method:"XLSX desde portal", methodDetail:"URL fija. Archivo ~5 MB.", endpoint:"URL CONAPO (XLSX público)\\n\\nFiltrar CLAVE: 14039, 14120, 14098, 14101, 14097", auth:"Sin autenticación", formato:"XLSX", freq:"Anual", proposal:"Lambda cron anual: descarga, filtra ZMG, deposita CSV en RapidCanvas.", consideraciones:"URL puede cambiar. Datos muy estables.", contacto:"CONAPO: gob.mx/conapo", dependencias:"URL pública + Lambda openpyxl"},
+  "enigh":      {name:"ENIGH / IMCP", id:"DS_EXT_05", sub:"Consumo privado hogar", vars:1, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_05"], desc:"Indicador Mensual del Consumo Privado — proxy del gasto por hogar ENIGH vía API INEGI.", method:"API INEGI (IMCP)", methodDetail:"Se suma al job Lambda existente. Costo cero.", endpoint:"GET /INDICATOR/{id_imcp}/es/00/false/BISE/2.0/{token}?type=json", auth:"Token INEGI (mismo)", formato:"JSON", freq:"Mensual", proposal:"Sumar al job Lambda INEGI/SNIIV.", consideraciones:"IMCP ≠ ENIGH exacto. Mejor proxy mensual. Actualizar ENIGH real cuando se publique.", contacto:"INEGI: mismo portal", dependencias:"Token INEGI + código IMCP confirmado"},
+  "imss":       {name:"IMSS / IIEG", id:"DS_EXT_06, 07", sub:"Empleo formal", vars:36, badge:"op", estado:"Listo", destino:"rc", varKeys:["DS_EXT_06","DS_EXT_07"], desc:"Trabajadores asegurados IMSS por municipio desde portales MIDE e IIEG Jalisco.", method:"Portales MIDE / IIEG", methodDetail:"Consulta manual. Sin API formal.", endpoint:"IIEG: iieg.gob.mx\\nMIDE: mfrp.mfrp.gob.mx/mide (indicador 781)", auth:"Sin autenticación", formato:"HTML / CSV", freq:"Trimestral", proposal:"Opción A: Scraper Puppeteer. Opción B: Script semi-manual.", consideraciones:"Sin API. Scraper frágil. Semi-manual más robusto.", contacto:"IIEG / MIDE Jalisco", dependencias:"Lambda Puppeteer o script local"},
+  "flexmls":    {name:"FlexMLS", id:"DS_EXT_11", sub:"Listados Vallarta", vars:99, badge:"en", estado:"En curso", destino:"s3", varKeys:["DS_EXT_11"], desc:"Listados inmobiliarios MLS Vallarta. Spark API y RESO Web API son métodos oficiales.", method:"En negociación", methodDetail:"En negociación con partner para acceso API. Mientras tanto se carga manualmente a S3.", endpoint:"Spark API: sparkplatform.com/docs\\nRESO Web API: estándar OData", auth:"API Key miembro MLS (en negociación)", formato:"CSV → JSON", freq:"Semanal", proposal:"Mientras se completa la negociación: carga manual a S3. Una vez autorizado: Lambda semanal automática → S3.", consideraciones:"Requiere autorización MLS vía sparkplatform.com.", contacto:"FlexMLS / AMPI Vallarta", dependencias:"Acceso MLS + API key"},
+  "benchmark":  {name:"Benchmark ×4", id:"DS_INT_06 a 09", sub:"Visitas competencia", vars:182, badge:"en", estado:"En curso", destino:"rc", varKeys:["DS_INT_06","DS_INT_07","DS_INT_08","DS_INT_09"], desc:"4 formularios: Townhouse (48), Terrenos (27), Vertical (49), Residencial (58).", method:"Compartiremos credenciales", methodDetail:"TyA compartirá las credenciales del service account con RapidCanvas para importación directa.", endpoint:"Google Sheets API v4", auth:"Service account Google", formato:"Google Sheets", freq:"Por evento", proposal:"Importación directa de Google Sheets/Drive a RapidCanvas mediante credenciales compartidas (service account).", consideraciones:"Cada formulario tiene estructura diferente. Incluyen uploads.", contacto:"Equipo TyA — Inteligencia de Mercado", dependencias:"Service account Google compartido"},
+  "grupo_guia": {name:"Grupo Guía — Hubspot", id:"DS_EXT_12", sub:"Datos comerciales / CRM", vars:0, badge:"en", estado:"En curso", destino:"dual", destinoPills:[{label:"RapidCanvas (legacy)", class:"dp-rc"},{label:"Por definir (endpoint)", class:"dp-tbd"}], varKeys:[], desc:"Datos de Grupo Guía provenientes de Hubspot. Dos flujos coexistentes: (1) Legacy ya disponibilizado en el Drive de Benchmark; (2) Endpoint que Grupo Guía nos entregará a futuro.", method:"Doble flujo: Drive + API", methodDetail:"(1) Legacy: archivos disponibles en el Drive de Benchmark, accesados con las mismas credenciales y enviados a RapidCanvas. (2) Endpoint: Grupo Guía entregará un endpoint propio (HubSpot API) — destino aún no definido (S3 o RapidCanvas).", endpoint:"Legacy: Google Drive de Benchmark\\nEndpoint: API HubSpot (por entregar)", auth:"Legacy: mismas credenciales que Benchmark.\\nEndpoint: por definir.", formato:"Por definir (CSV / XLSX vía Drive; JSON vía API)", freq:"Por evento", proposal:"Fase 1 (legacy): consumir desde Drive de Benchmark vía credenciales compartidas → RapidCanvas. Fase 2 (endpoint): integrar API HubSpot cuando Grupo Guía la entregue; definir destino S3 o RapidCanvas en ese momento.", consideraciones:"Definir destino del endpoint antes de su entrega. Evaluar si conviene unificar ambos flujos hacia el mismo destino para simplificar el modelado downstream.", contacto:"Grupo Guía / Equipo TyA", dependencias:"Legacy: pipeline Benchmark + Drive compartido. Endpoint: integración API por definir."},
+  "gis":        {name:"Ubicación GIS", id:"DS_INT_02", sub:"Coordenadas de desarrollos", vars:6, badge:"stop", estado:"Detenido", destino:"s3", varKeys:["DS_INT_02"], desc:"Georreferenciación de desarrollos TyA: coordenadas, polígonos, referencias geográficas.", method:"Detenido", methodDetail:"Pipeline pausado.", endpoint:"N/A", auth:"N/A", formato:"XLSX / CSV", freq:"Ad hoc", proposal:"Reactivar: portal de carga + validación → S3.", consideraciones:"Verificar sistema de referencia WGS84.", contacto:"TyA — Planeación", dependencias:"Portal + Lambda"},
+  "reservas":   {name:"Reservas", id:"DS_INT_03", sub:"Control de reservas", vars:40, badge:"stop", estado:"Detenido", destino:"s3", varKeys:["DS_INT_03"], desc:"Control de reservas de unidades: estatus, fechas, montos, cliente, lote/torre.", method:"Detenido", methodDetail:"Pipeline pausado.", endpoint:"N/A", auth:"N/A", formato:"XLSX", freq:"Ad hoc", proposal:"Reactivar: portal de carga + validación → S3.", consideraciones:"Estructura puede variar entre versiones de Excel.", contacto:"TyA — Nuevos Negocios", dependencias:"Portal + Lambda"}
+};
+
+const VARS = {"DS_EXT_02": [{"n": "reportId", "d": ""}, {"n": "generatedAt", "d": ""}, {"n": "id", "d": ""}, {"n": "type", "d": ""}, {"n": "properties.name", "d": ""}, {"n": "properties.transport_type", "d": ""}, {"n": "properties.system", "d": ""}, {"n": "properties.line", "d": ""}, {"n": "properties.element_type", "d": ""}, {"n": "properties.bike_station_id", "d": ""}, {"n": "properties.num_bicycles", "d": ""}, {"n": "properties.network", "d": ""}, {"n": "geometry.type", "d": ""}, {"n": "geometry.coordinates", "d": ""}, {"n": "id", "d": ""}, {"n": "name", "d": ""}, {"n": "category", "d": ""}, {"n": "num_employees", "d": ""}, {"n": "latitude", "d": ""}, {"n": "longitude", "d": ""}, {"n": "walkability_index", "d": ""}, {"n": "traffic_index", "d": ""}, {"n": "congestion_by_hour.[hora].index", "d": ""}, {"n": "congestion_by_hour.[hora].level", "d": ""}, {"n": "state_id", "d": ""}, {"n": "city_id", "d": ""}, {"n": "project_date", "d": ""}, {"n": "project_name", "d": ""}, {"n": "sector", "d": ""}, {"n": "total_budget", "d": ""}, {"n": "latitude", "d": ""}, {"n": "longitude", "d": ""}, {"n": "category", "d": ""}, {"n": "year", "d": ""}, {"n": "total", "d": ""}, {"n": "population_by_year_and_gender", "d": ""}, {"n": "population_by_year_and_cohort", "d": ""}, {"n": "year (key)", "d": ""}, {"n": "rented", "d": ""}, {"n": "owned", "d": ""}, {"n": "other", "d": ""}, {"n": "block_level_metrics", "d": ""}, {"n": "combined_metrics", "d": ""}, {"n": "appraisal_id", "d": ""}, {"n": "status", "d": ""}, {"n": "listing_type", "d": ""}, {"n": "property_year", "d": ""}, {"n": "age", "d": ""}, {"n": "construction_surface", "d": ""}, {"n": "tom", "d": ""}, {"n": "ppm2", "d": ""}, {"n": "appraisal_value", "d": ""}, {"n": "amenity_name", "d": ""}, {"n": "properties_with_amenity", "d": ""}, {"n": "pct_presence", "d": ""}, {"n": "property_id", "d": ""}, {"n": "property_type", "d": ""}, {"n": "operation", "d": ""}, {"n": "status", "d": ""}, {"n": "price", "d": ""}, {"n": "surface", "d": ""}, {"n": "bedrooms", "d": ""}, {"n": "bathrooms", "d": ""}, {"n": "parking_spaces", "d": ""}, {"n": "built_year", "d": ""}, {"n": "neighborhood", "d": ""}, {"n": "created_at", "d": ""}, {"n": "development_id", "d": ""}, {"n": "development_name", "d": ""}, {"n": "developer_name", "d": ""}, {"n": "operation_type", "d": ""}, {"n": "latitude", "d": ""}, {"n": "longitude", "d": ""}, {"n": "delivery_date", "d": ""}, {"n": "months_on_sale", "d": ""}, {"n": "is_new", "d": ""}, {"n": "built_area_m2", "d": ""}, {"n": "balcony_area_m2", "d": ""}, {"n": "avg_price", "d": ""}, {"n": "price_per_m2", "d": ""}, {"n": "price_variation", "d": ""}, {"n": "floors", "d": ""}, {"n": "total_units", "d": ""}, {"n": "units_sold", "d": ""}, {"n": "units_sold_this_year", "d": ""}, {"n": "previous_inventory", "d": ""}, {"n": "development_id", "d": ""}, {"n": "development_name", "d": ""}, {"n": "developer_name", "d": ""}, {"n": "operation_type", "d": ""}, {"n": "latitude", "d": ""}, {"n": "longitude", "d": ""}, {"n": "built_area_m2", "d": ""}, {"n": "avg_price", "d": ""}, {"n": "price_per_m2", "d": ""}, {"n": "floors", "d": ""}], "DS_EXT_04": [{"n": "TIME_PERIOD", "d": ""}, {"n": "OBS_VALUE", "d": ""}, {"n": "OBS_EXCEPTION", "d": ""}, {"n": "OBS_STATUS", "d": ""}, {"n": "OBS_SOURCE", "d": ""}, {"n": "OBS_NOTE", "d": ""}, {"n": "COBER_GEO", "d": ""}], "DS_EXT_08": [{"n": "anio", "d": ""}, {"n": "mes", "d": ""}, {"n": "estado", "d": ""}, {"n": "municipio", "d": ""}, {"n": "pcu", "d": ""}, {"n": "segmento", "d": ""}, {"n": "segmento_uma", "d": ""}, {"n": "tipo_vivienda", "d": ""}, {"n": "superficie", "d": ""}, {"n": "recamara", "d": ""}, {"n": "viviendas", "d": ""}], "DS_EXT_09": [{"n": "anio", "d": ""}, {"n": "mes", "d": ""}, {"n": "estado", "d": ""}, {"n": "municipio", "d": ""}, {"n": "zona", "d": ""}, {"n": "destino_credito", "d": ""}, {"n": "genero", "d": ""}, {"n": "grupo_organismo", "d": ""}, {"n": "modalidad", "d": ""}, {"n": "organismo", "d": ""}, {"n": "poblacion_indigena", "d": ""}, {"n": "rango_edad", "d": ""}, {"n": "rango_salarial", "d": ""}, {"n": "tipo_credito", "d": ""}, {"n": "valor_vivienda", "d": ""}, {"n": "acciones", "d": ""}, {"n": "monto", "d": ""}], "DS_EXT_10": [{"n": "Municipio", "d": ""}, {"n": "Hasta 2.7 uma", "d": ""}, {"n": "De 2.71 a 4.1 uma", "d": ""}, {"n": "De 4.11 a 5.8 uma", "d": ""}, {"n": "De 5.81 a 9.0 uma", "d": ""}, {"n": "Mayor a 9.00 uma", "d": ""}, {"n": "Total", "d": ""}], "DS_EXT_01": [{"n": "ID", "d": "Identificador único del proyecto en el reporte DIME"}, {"n": "Clasificación", "d": "Categoría económica asignada por Softec según precio y características"}, {"n": "Tipo", "d": "Tipología de la vivienda: departamento, loft, townhouse, etc."}, {"n": "Nombre", "d": "Nombre de la empresa desarrolladora del proyecto"}, {"n": "Dirección", "d": "Dirección del desarrollo inmobiliario"}, {"n": "Colonia", "d": "Colonia dentro de la plaza donde se ubica el desarrollo"}, {"n": "Municipio", "d": "Municipio de la entidad donde se ubica el desarrollo"}, {"n": "Promotor", "d": "Nombre del promotor o comercializador del desarrollo"}, {"n": "Área", "d": "M2 de construcción del prototipo. Variantes: A, B, C"}, {"n": "Terraza", "d": "M2 de terraza o patio. Variantes: A, B, C"}, {"n": "Terreno", "d": "M2 totales de terreno. Variantes: A, B, C"}, {"n": "Recámaras", "d": "Número de recámaras (= Alcoba). Variantes: A, B, C"}, {"n": "Baños", "d": "Número de baños. Variantes: A, B, C"}, {"n": "Cuarto de Servicio", "d": "Número de cuartos de servicio. Variantes: A, B, C"}, {"n": "Cajón", "d": "Cajones de estacionamiento incluidos. Variantes: A, B, C"}, {"n": "Niveles", "d": "Número de pisos del complejo/torre. Variantes: A, B, C"}, {"n": "Precio Actual", "d": "Precio vigente al momento del DIME (MXN). Variantes: A, B, C"}, {"n": "Precio Inicial", "d": "Precio al inicio de comercialización (MXN). Variantes: A, B, C"}, {"n": "Valor M2", "d": "Valor promedio por m2 de construcción (MXN). Variantes: A, B, C"}, {"n": "Absorción", "d": "Tasa mensual de ventas del complejo"}, {"n": "Meses en Venta", "d": "Meses desde preventa hasta fecha de actualización"}, {"n": "Meses de Inventario", "d": "Meses estimados para agotar inventario"}, {"n": "Éxito Comercial", "d": "% unidades vendidas mensualmente vs total"}, {"n": "Unidades Totales", "d": "Unidades en etapa de venta"}, {"n": "Unidades Proyectadas", "d": "Unidades contempladas en el plan"}, {"n": "Inventario", "d": "Unidades disponibles para venta"}, {"n": "Vendidas", "d": "Unidades vendidas a la fecha"}, {"n": "Fecha de Alta", "d": "Fecha de inclusión en reportes Softec"}, {"n": "Fecha de Inicio", "d": "Fecha de inicio de venta"}, {"n": "Fecha de Actualización", "d": "Última captura de información"}, {"n": "Fecha de Entrega", "d": "Fecha de entrega física al cliente"}, {"n": "Financiamiento 1a Opción", "d": "Institución financiera sugerida por el desarrollador"}], "DS_EXT_03": [{"n": "CLAVE", "d": ""}, {"n": "CLAVE_ENT", "d": ""}, {"n": "NOM_ENT", "d": ""}, {"n": "NOM_MUN", "d": ""}, {"n": "ANIO", "d": ""}, {"n": "HOM_MIT_ANIO", "d": ""}, {"n": "MUJ_MIT_ANIO", "d": ""}, {"n": "POB_MIT_MUN", "d": ""}, {"n": "MUJ_00_14", "d": ""}, {"n": "HOM_00_14", "d": ""}, {"n": "POB_00_14", "d": ""}, {"n": "MUJ_15_64", "d": ""}, {"n": "HOM_15_64", "d": ""}, {"n": "POB_15_64", "d": ""}, {"n": "MUJ_60_MAS", "d": ""}, {"n": "HOM_60_MAS", "d": ""}, {"n": "POB_60_MAS", "d": ""}, {"n": "MUJ_65_MAS", "d": ""}, {"n": "HOM_65_MAS", "d": ""}, {"n": "POB_65_MAS", "d": ""}, {"n": "POB_MIT_ENT", "d": ""}, {"n": "EDAD_MED", "d": ""}, {"n": "POR_MUN", "d": ""}, {"n": "IND_ENV_60", "d": ""}, {"n": "IND_ENV_65", "d": ""}, {"n": "RHM", "d": ""}, {"n": "RAZ_DEP_ADU", "d": ""}, {"n": "RAZ_DEP_INF", "d": ""}, {"n": "RAZ_DEP", "d": ""}], "DS_EXT_05": [{"n": "Gasto corriente monetario trimestral por hogar", "d": ""}], "DS_EXT_06": [{"n": "cve_delegacion", "d": ""}, {"n": "cve_subdelegacion", "d": ""}, {"n": "cve_entidad", "d": ""}, {"n": "cve_municipio", "d": ""}, {"n": "sector_economico_1", "d": ""}, {"n": "sector_economico_2", "d": ""}, {"n": "sector_economico_4", "d": ""}, {"n": "sexo", "d": ""}, {"n": "rango_edad", "d": ""}, {"n": "rango_salarial", "d": ""}, {"n": "rango_uma", "d": ""}, {"n": "asegurados", "d": ""}, {"n": "no_trabajadores", "d": ""}, {"n": "ta", "d": ""}, {"n": "teu", "d": ""}, {"n": "tec", "d": ""}, {"n": "tpu", "d": ""}, {"n": "tpc", "d": ""}, {"n": "ta_sal", "d": ""}, {"n": "teu_sal", "d": ""}, {"n": "tec_sal", "d": ""}, {"n": "tpu_sal", "d": ""}, {"n": "tpc_sal", "d": ""}, {"n": "masa_sal_ta", "d": ""}, {"n": "masa_sal_teu", "d": ""}, {"n": "masa_sal_tec", "d": ""}, {"n": "masa_sal_tpu", "d": ""}, {"n": "masa_sal_tpc", "d": ""}], "DS_EXT_07": [{"n": "anio", "d": ""}, {"n": "estado", "d": ""}, {"n": "municipio", "d": ""}, {"n": "sector_economico", "d": ""}, {"n": "sexo", "d": ""}, {"n": "grupos_de_edad", "d": ""}, {"n": "rango_salarial", "d": ""}, {"n": "trabajadores", "d": ""}], "DS_EXT_11": [{"n": "List Number", "d": ""}, {"n": "Agency Name", "d": ""}, {"n": "Agency Phone", "d": ""}, {"n": "Listing Agent", "d": ""}, {"n": "Co-Listing Agent", "d": ""}, {"n": "Property Type", "d": ""}, {"n": "Card Format", "d": ""}, {"n": "Book Section", "d": ""}, {"n": "Selling Agency", "d": ""}, {"n": "Selling Agent", "d": ""}, {"n": "Co-Selling Agent", "d": ""}, {"n": "End Date", "d": ""}, {"n": "Begin Date", "d": ""}, {"n": "Sold Date", "d": ""}, {"n": "Under Contract Date", "d": ""}, {"n": "Fallthrough Date", "d": ""}, {"n": "Status", "d": ""}, {"n": "Status Change Date", "d": ""}, {"n": "Withdraw Date", "d": ""}, {"n": "Cancel Date", "d": ""}, {"n": "Contingent", "d": ""}, {"n": "Contingent Remarks", "d": ""}, {"n": "Original Price USD$", "d": ""}, {"n": "List Price USD$", "d": ""}, {"n": "Sold Price USD$", "d": ""}, {"n": "Financing", "d": ""}, {"n": "Area", "d": ""}, {"n": "Street Number", "d": ""}, {"n": "Street Name", "d": ""}, {"n": "NO_COMMON_NAME", "d": ""}, {"n": "Unit #", "d": ""}, {"n": "Street Suffix", "d": ""}, {"n": "PROFECO Purchase-Sale Contract", "d": ""}, {"n": "Zone", "d": ""}, {"n": "NO_COMMON_NAME.1", "d": ""}, {"n": "NO_COMMON_NAME.2", "d": ""}, {"n": "Deeded Bodega M2", "d": ""}, {"n": "Year Built", "d": ""}, {"n": "Style", "d": ""}, {"n": "Type of Fractional", "d": ""}, {"n": "NO_COMMON_NAME.3", "d": ""}, {"n": "Stories", "d": ""}, {"n": "Total Rooms", "d": ""}, {"n": "Total Bedrooms", "d": ""}, {"n": "Total Baths", "d": ""}, {"n": "Full Baths", "d": ""}, {"n": "NO_COMMON_NAME.4", "d": ""}, {"n": "Garage Stalls", "d": ""}, {"n": "Fiscal Value", "d": ""}, {"n": "Property Tax Year", "d": ""}, {"n": "Development Name", "d": ""}, {"n": "Description", "d": ""}, {"n": "Private Remarks", "d": ""}, {"n": "Tax ID Number", "d": ""}, {"n": "Legal", "d": ""}, {"n": "Directions", "d": ""}, {"n": "mod_timestamp", "d": ""}, {"n": "Primary View", "d": ""}, {"n": "Contingent Date Rmrk", "d": ""}, {"n": "NO_COMMON_NAME.5", "d": ""}, {"n": "Predial Number", "d": ""}, {"n": "Developer Name", "d": ""}, {"n": "NO_COMMON_NAME.6", "d": ""}, {"n": "Payable after deposit of", "d": ""}, {"n": "Secondary View", "d": ""}, {"n": "Parking", "d": ""}, {"n": "Mstr Plan Community", "d": ""}, {"n": "Sold Price/Sq Meter", "d": ""}, {"n": "Lot M2", "d": ""}, {"n": "Ocean Front Meters", "d": ""}, {"n": "# Units in Develop", "d": ""}, {"n": "Decks/Patios SqFt", "d": ""}, {"n": "Lot SqFt", "d": ""}, {"n": "Decks/Patios M2", "d": ""}, {"n": "Price/Sq Meter", "d": ""}, {"n": "NO_COMMON_NAME.7", "d": ""}, {"n": "Est. Delivery Date", "d": ""}, {"n": "Community", "d": ""}, {"n": "Pre-Construction", "d": ""}, {"n": "Pet Friendly", "d": ""}, {"n": "Property Tax Amount (Pesos)", "d": ""}, {"n": "Condo M2", "d": ""}, {"n": "Deeded Parking M2", "d": ""}, {"n": "Construction Manifest", "d": ""}, {"n": "Current Lien or Litigation", "d": ""}, {"n": "Adjacent to Federal Zone", "d": ""}, {"n": "Has Federal Zone Concession", "d": ""}, {"n": "Certificate of Commercial Use", "d": ""}, {"n": "Flex Room", "d": ""}, {"n": "Seller allows showings while Pending", "d": ""}, {"n": "List Price MXN$", "d": ""}, {"n": "PROFEPA Legal Procedures", "d": ""}, {"n": "Régimen de Propiedad", "d": ""}, {"n": "Liens", "d": ""}, {"n": "Selling Side", "d": ""}, {"n": "Photo URL", "d": ""}, {"n": "Days on Market", "d": ""}, {"n": "Rooms", "d": ""}, {"n": "Features", "d": ""}], "DS_INT_06": [{"n": "Cual es tu desarrollo (TYA)", "d": ""}, {"n": "Nombre del desarrollo que visitas", "d": ""}, {"n": "Domicilio del desarrollo", "d": ""}, {"n": "Tipo de producto", "d": ""}, {"n": "Total de unidades", "d": ""}, {"n": "Unidades vendidas", "d": ""}, {"n": "Unidades disponibles", "d": ""}, {"n": "Precio por Modelo (archivo)", "d": ""}, {"n": "Lista de Precios (archivo)", "d": ""}, {"n": "Cuantas etapas (torres) tiene el proyecto", "d": ""}, {"n": "En que etapa (torre) van actualmente", "d": ""}, {"n": "Venta o preventa", "d": ""}, {"n": "Nombre de modelo (Pequeño)", "d": ""}, {"n": "Numero de plantas (Pequeño)", "d": ""}, {"n": "Numero de recamaras (Pequeño)", "d": ""}, {"n": "Numero de baños (Pequeño)", "d": ""}, {"n": "Medios baños (Pequeño)", "d": ""}, {"n": "Vestidor (Pequeño)", "d": ""}, {"n": "M2 De Construcción (Pequeño)", "d": ""}, {"n": "Precio (Pequeño)", "d": ""}, {"n": "Nombre de modelo (Intermedio)", "d": ""}, {"n": "Numero de plantas (Intermedio)", "d": ""}, {"n": "Numero de recamaras (Intermedio)", "d": ""}, {"n": "Numero de baños (Intermedio)", "d": ""}, {"n": "Medios baños (Intermedio)", "d": ""}, {"n": "Vestidor (Intermedio)", "d": ""}, {"n": "M2 De Terreno (Intermedio)", "d": ""}, {"n": "Precio (Intermedio)", "d": ""}, {"n": "Nombre del modelo (Mas Grande)", "d": ""}, {"n": "Numero de plantas (Mas Grande)", "d": ""}, {"n": "Numero de recamaras (Mas Grande)", "d": ""}, {"n": "Numero de baños (Mas Grande)", "d": ""}, {"n": "Medios baños (Mas Grande)", "d": ""}, {"n": "Vestidor (Mas Grande)", "d": ""}, {"n": "M2 De Construcción (Mas Grande)", "d": ""}, {"n": "Precio (Mas Grande)", "d": ""}, {"n": "Precio incluye cocina", "d": ""}, {"n": "Precio incluye closets", "d": ""}, {"n": "Precio incluye canceles en baños", "d": ""}, {"n": "A/C incluido", "d": ""}, {"n": "AMENIDADES", "d": ""}, {"n": "Fecha de visita", "d": ""}, {"n": "Sube Brochure (archivo)", "d": ""}, {"n": "Fotografías y/o Amenidades (archivo)", "d": ""}, {"n": "Califica el proyecto en general", "d": ""}, {"n": "¿Por qué? (proyecto)", "d": ""}, {"n": "Califica la experiencia de ventas", "d": ""}, {"n": "¿Por qué? (ventas)", "d": ""}], "DS_INT_07": [{"n": "Cual es tu desarrollo (TYA)", "d": ""}, {"n": "Nombre del desarrollo que visitas", "d": ""}, {"n": "Domicilio del desarrollo", "d": ""}, {"n": "Tipo de producto", "d": ""}, {"n": "Ubicación del desarrollo", "d": ""}, {"n": "Total de unidades", "d": ""}, {"n": "Unidades vendidas", "d": ""}, {"n": "Unidades disponibles", "d": ""}, {"n": "Lista de Precios (archivo)", "d": ""}, {"n": "Cuota de mantenimiento", "d": ""}, {"n": "Cuantas etapas tiene el proyecto", "d": ""}, {"n": "En que etapa van actualmente", "d": ""}, {"n": "Venta o preventa", "d": ""}, {"n": "Lote mas pequeño M2", "d": ""}, {"n": "Precio por M2 (Pequeño)", "d": ""}, {"n": "Lote tipo M2", "d": ""}, {"n": "Precio por M2 (Tipo)", "d": ""}, {"n": "Lote mas grande M2", "d": ""}, {"n": "Precio por M2 (Grande)", "d": ""}, {"n": "AMENIDADES", "d": ""}, {"n": "Fecha de visita", "d": ""}, {"n": "Sube Brochure (archivo)", "d": ""}, {"n": "Fotografías y/o otra información relevante (archivo)", "d": ""}, {"n": "Califica el proyecto en general", "d": ""}, {"n": "¿Por qué? (proyecto)", "d": ""}, {"n": "Califica la experiencia de ventas", "d": ""}, {"n": "¿Por qué? (ventas)", "d": ""}], "DS_INT_08": [{"n": "Cual es tu desarrollo (TYA)", "d": ""}, {"n": "Nombre del desarrollo que visitas", "d": ""}, {"n": "Domicilio del desarrollo", "d": ""}, {"n": "Tipo de producto", "d": ""}, {"n": "Total de unidades", "d": ""}, {"n": "Unidades vendidas", "d": ""}, {"n": "Unidades disponibles", "d": ""}, {"n": "Precio por Modelo (archivo)", "d": ""}, {"n": "Lista de Precios (archivo)", "d": ""}, {"n": "Cuota de mantenimiento", "d": ""}, {"n": "Cuantas etapas (torres) tiene el proyecto", "d": ""}, {"n": "En que etapa (torre) van actualmente", "d": ""}, {"n": "Venta o preventa", "d": ""}, {"n": "Nombre de modelo (Pequeño)", "d": ""}, {"n": "Numero de plantas (Pequeño)", "d": ""}, {"n": "Numero de recamaras (Pequeño)", "d": ""}, {"n": "Numero de baños (Pequeño)", "d": ""}, {"n": "Medios baños (Pequeño)", "d": ""}, {"n": "Vestidor (Pequeño)", "d": ""}, {"n": "M2 De Construcción (Pequeño)", "d": ""}, {"n": "Precio (Pequeño)", "d": ""}, {"n": "Nombre de modelo (Intermedio)", "d": ""}, {"n": "Numero de plantas (Intermedio)", "d": ""}, {"n": "Numero de recamaras (Intermedio)", "d": ""}, {"n": "Numero de baños (Intermedio)", "d": ""}, {"n": "Medios baños (Intermedio)", "d": ""}, {"n": "Vestidor (Intermedio)", "d": ""}, {"n": "M2 De Terreno (Intermedio)", "d": ""}, {"n": "Precio (Intermedio)", "d": ""}, {"n": "Nombre del modelo (Mas Grande)", "d": ""}, {"n": "Numero de plantas (Mas Grande)", "d": ""}, {"n": "Numero de recamaras (Mas Grande)", "d": ""}, {"n": "Numero de baños (Mas Grande)", "d": ""}, {"n": "Medios baños (Mas Grande)", "d": ""}, {"n": "Vestidor (Mas Grande)", "d": ""}, {"n": "M2 De Construcción (Mas Grande)", "d": ""}, {"n": "Precio (Mas Grande)", "d": ""}, {"n": "Precio incluye cocina", "d": ""}, {"n": "Precio incluye closets", "d": ""}, {"n": "Precio incluye canceles en baños", "d": ""}, {"n": "A/C incluido", "d": ""}, {"n": "AMENIDADES", "d": ""}, {"n": "Fecha de visita", "d": ""}, {"n": "Sube Brochure (archivo)", "d": ""}, {"n": "Fotografías y/o Amenidades (archivo)", "d": ""}, {"n": "Califica el proyecto en general", "d": ""}, {"n": "¿Por qué? (proyecto)", "d": ""}, {"n": "Califica la experiencia de ventas", "d": ""}, {"n": "¿Por qué? (ventas)", "d": ""}], "DS_INT_09": [{"n": "Cual es tu desarrollo (TYA)", "d": ""}, {"n": "Nombre del desarrollo que visitas", "d": ""}, {"n": "Domicilio del desarrollo", "d": ""}, {"n": "Tipo de producto", "d": ""}, {"n": "Total de unidades", "d": ""}, {"n": "Unidades vendidas", "d": ""}, {"n": "Unidades disponibles", "d": ""}, {"n": "Cuota de mantenimiento", "d": ""}, {"n": "Cuantas etapas tiene el proyecto", "d": ""}, {"n": "En que etapa van actualmente", "d": ""}, {"n": "Venta o preventa", "d": ""}, {"n": "Nombre de modelo (Pequeño)", "d": ""}, {"n": "Numero de plantas (Pequeño)", "d": ""}, {"n": "Numero de recamaras (Pequeño)", "d": ""}, {"n": "Numero de baños (Pequeño)", "d": ""}, {"n": "Medios baños (Pequeño)", "d": ""}, {"n": "Vestidor (Pequeño)", "d": ""}, {"n": "Cuarto de lavado (Pequeño)", "d": ""}, {"n": "Roof garden (Pequeño)", "d": ""}, {"n": "M2 De Terreno (Pequeño)", "d": ""}, {"n": "M2 De Construcción (Pequeño)", "d": ""}, {"n": "Precio (Pequeño)", "d": ""}, {"n": "Nombre de modelo (Intermedio)", "d": ""}, {"n": "Numero de plantas (Intermedio)", "d": ""}, {"n": "Numero de recamaras (Intermedio)", "d": ""}, {"n": "Numero de baños (Intermedio)", "d": ""}, {"n": "Medios baños (Intermedio)", "d": ""}, {"n": "Vestidor (Intermedio)", "d": ""}, {"n": "Cuarto de lavado (Intermedio)", "d": ""}, {"n": "Roof garden (Intermedio)", "d": ""}, {"n": "M2 De Terreno (Intermedio)", "d": ""}, {"n": "M2 De Construcción (Intermedio)", "d": ""}, {"n": "Precio (Intermedio)", "d": ""}, {"n": "Nombre del modelo (Mas Grande)", "d": ""}, {"n": "Numero de plantas (Mas Grande)", "d": ""}, {"n": "Numero de recamaras (Mas Grande)", "d": ""}, {"n": "Numero de baños (Mas Grande)", "d": ""}, {"n": "Medios baños (Mas Grande)", "d": ""}, {"n": "Vestidor (Mas Grande)", "d": ""}, {"n": "Cuarto de lavado (Mas Grande)", "d": ""}, {"n": "Roof garden (Mas Grande)", "d": ""}, {"n": "M2 De Terreno (Mas Grande)", "d": ""}, {"n": "M2 De Construcción (Mas Grande)", "d": ""}, {"n": "Precio (Mas Grande)", "d": ""}, {"n": "Precio incluye cocina", "d": ""}, {"n": "Precio incluye closets", "d": ""}, {"n": "Precio incluye canceles en baños", "d": ""}, {"n": "A/C incluido", "d": ""}, {"n": "Lista de Precios (archivo)", "d": ""}, {"n": "Precio por Modelo (archivo)", "d": ""}, {"n": "AMENIDADES", "d": ""}, {"n": "Fecha de visita", "d": ""}, {"n": "Sube Brochure (archivo)", "d": ""}, {"n": "Fotografías y/o otra información relevante (archivo)", "d": ""}, {"n": "Califica el proyecto en general", "d": ""}, {"n": "¿Por qué? (proyecto)", "d": ""}, {"n": "Califica la experiencia de ventas", "d": ""}, {"n": "¿Por qué? (ventas)", "d": ""}], "DS_INT_02": [{"n": "tipoProducto", "d": ""}, {"n": "Proyecto", "d": ""}, {"n": "Latitud", "d": ""}, {"n": "Longitud", "d": ""}, {"n": "Dirección", "d": ""}, {"n": "Places", "d": ""}], "DS_INT_03": [{"n": "Indicador", "d": ""}, {"n": "Tipo", "d": ""}, {"n": "Producto", "d": ""}, {"n": "Estatus", "d": ""}, {"n": "Plaza", "d": ""}, {"n": "Segmento", "d": ""}, {"n": "División", "d": ""}, {"n": "Director", "d": ""}, {"n": "Proyecto", "d": ""}, {"n": "Desarrollo", "d": ""}, {"n": "Etapa", "d": ""}, {"n": "ONOFF", "d": ""}, {"n": "Cuenta de Desarrollo", "d": ""}, {"n": "Etiquetas de fila", "d": ""}, {"n": "Etiquetas de columna", "d": ""}, {"n": "Total", "d": ""}, {"n": "Total general", "d": ""}, {"n": "Suma de Total", "d": ""}, {"n": "Pico", "d": ""}, {"n": "TIR", "d": ""}, {"n": "Múltiplo", "d": ""}, {"n": "Margen", "d": ""}, {"n": "Ventas", "d": ""}, {"n": "Developer Fee", "d": ""}, {"n": "Crecimiento", "d": ""}, {"n": "Superficie", "d": ""}, {"n": "Mts. Exc.", "d": ""}, {"n": "Mts. Const.", "d": ""}, {"n": "Precio Venta", "d": ""}, {"n": "Nota CRCA", "d": ""}, {"n": "Escitura.", "d": ""}, {"n": "Tipo Venta", "d": ""}, {"n": "Plan Pago", "d": ""}, {"n": "Cliente", "d": ""}, {"n": "Num Cte", "d": ""}, {"n": "Ciudad", "d": ""}, {"n": "Ubicacion", "d": ""}, {"n": "IDLote", "d": ""}, {"n": "Prototipo", "d": ""}, {"n": "Num Escritura.", "d": ""}]};
+
+function openModal(k) {
+  const d=D[k];if(!d)return;
+  const bc=d.badge==='op'?'b-op':d.badge==='en'?'b-en':'b-stop';
+  let destinoHTML;
+  if(d.destino==='dual' && d.destinoPills){
+    destinoHTML=d.destinoPills.map(p=>`<span class="dpill ${p.class}">${p.label}</span>`).join(' ');
+  }else{
+    const dpClass=d.destino==='s3'?'dp-s3':'dp-rc';
+    const dpLabel=d.destino==='s3'?'AWS S3':'RapidCanvas';
+    destinoHTML=`<span class="dpill ${dpClass}">${dpLabel}</span>`;
+  }
+  let allVars=[];
+  (d.varKeys||[]).forEach(dk=>{if(VARS[dk])allVars=allVars.concat(VARS[dk])});
+  const vrows=allVars.map((v,i)=>`<tr><td style="color:#999;font-family:monospace">${i+1}</td><td style="font-weight:500;color:#333">${v.n}</td><td>${v.d}</td></tr>`).join('');
+  document.getElementById('md').innerHTML=`
+    <div class="mh">
+      <button class="cbtn" onclick="closeModal()">✕</button>
+      <h2>${d.name}</h2>
+      <div class="dsid">${d.id} · ${d.sub}</div>
+      <div><span class="vpill">◆ ${d.vars} variables</span><span class="badge ${bc}">${d.estado}</span></div>
+    </div>
+    <div class="mb">
+      <div class="sec"><div class="sl">Descripción</div><div class="sv">${d.desc}</div></div>
+      <div class="g2">
+        <div class="sec"><div class="sl">Método de extracción</div><div class="sv"><strong>${d.method}</strong><br>${d.methodDetail}</div></div>
+        <div class="sec"><div class="sl">Formato / Frecuencia</div><div class="sv"><strong>${d.formato}</strong><br>${d.freq}</div></div>
+      </div>
+      <div class="sec"><div class="sl">Destino</div><div class="sv">${destinoHTML}</div></div>
+      <div class="sec"><div class="sl">Endpoint / URL</div><div class="mono">${d.endpoint}</div></div>
+      <div class="sec"><div class="sl">Autenticación</div><div class="sv">${d.auth}</div></div>
+      <hr class="d">
+      <div class="sec"><div class="sl">Propuesta de pipeline</div><div class="sv">${d.proposal}</div></div>
+      <div class="sec"><div class="sl">Consideraciones</div><div class="sv">${d.consideraciones}</div></div>
+      <div class="g2">
+        <div class="sec"><div class="sl">Contacto</div><div class="sv">${d.contacto}</div></div>
+        <div class="sec"><div class="sl">Dependencias</div><div class="sv">${d.dependencias}</div></div>
+      </div>
+      ${allVars.length?`<hr class="d">
+      <div class="sec">
+        <button class="vars-btn" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('show')">
+          <span class="arrow">▶</span> Ver ${allVars.length} variables del catálogo
+        </button>
+        <div class="vars-table">
+          <table><thead><tr><th>#</th><th>Variable</th><th>Descripción</th></tr></thead><tbody>${vrows}</tbody></table>
+        </div>
+      </div>`:''}
+    </div>`;
+  document.getElementById('ov').classList.add('open');
+}
+function closeModal(){document.getElementById('ov').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+</script></body></html>

@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plan Integral Salesforce — Tierra y Armonía · ProContacto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .re-est-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px;
+    padding: 3px 10px; font-size: 12px; font-weight: 700; color: #856404;
+    white-space: nowrap;
+  }
+  .re-est-badge .arrow { color: #c0392b; }
+  .re-est-badge .new-h { color: #0a2463; font-size: 14px; }
+  .delta-pill {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    border-radius: 20px; padding: 2px 8px; margin-left: 6px;
+  }
+  .delta-pos { background: #fce8e6; color: #a61c00; }
+  .delta-zero { background: #e6f4ed; color: #1a7a4a; }
+  .evidence-box {
+    background: #fffbe6; border-left: 3px solid #f9a825;
+    border-radius: 0 6px 6px 0; padding: 8px 12px; margin-top: 8px;
+    font-size: 12px; color: #4a3700;
+  }
+  .evidence-box strong { color: #b36b00; }
+  .comp-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 12px; }
+  .comp-table th { background: #0a2463; color: #fff; padding: 6px 10px; text-align: left; }
+  .comp-table td { padding: 6px 10px; border-bottom: 1px solid #dadce0; }
+  .comp-table tr:nth-child(even) td { background: #f8f9fa; }
+  .comp-table .total-row td { font-weight: 700; background: #e8f0fb; color: #0a2463; }
+  .comp-table .val-h { color: #5f6368; text-decoration: line-through; }
+  .comp-table .pro-h { color: #0a2463; font-weight: 700; }
+  .comp-table .delta-up { color: #a61c00; font-weight: 700; }
+  .comp-table .delta-eq { color: #1a7a4a; font-weight: 700; }
+  .summary-banner {
+    background: linear-gradient(90deg, #0a2463, #1e4d8c);
+    color: #fff; border-radius: 8px; padding: 16px 22px;
+    display: flex; gap: 32px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 22px;
+  }
+  .summary-banner .sb-item label { font-size: 11px; opacity: .75; display: block; text-transform: uppercase; letter-spacing: .7px; }
+  .summary-banner .sb-item span { font-size: 22px; font-weight: 700; }
+  .summary-banner .sb-item small { font-size: 11px; opacity: .75; }
+</style>
+<style>
+  :root {
+    --azul:       #0a2463;
+    --azul-med:   #1e4d8c;
+    --azul-light: #e8f0fb;
+    --verde:      #1a7a4a;
+    --verde-bg:   #e6f4ed;
+    --naranja:    #c4500a;
+    --naranja-bg: #fdf0e8;
+    --rojo:       #a61c00;
+    --rojo-bg:    #fce8e6;
+    --gris:       #5f6368;
+    --gris-light: #f8f9fa;
+    --border:     #dadce0;
+    --text:       #202124;
+    --white:      #ffffff;
+    --shadow:     0 1px 4px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-med) 100%);
+    color: var(--white);
+    padding: 36px 48px 32px;
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+  .header h1  { font-size: 26px; font-weight: 700; letter-spacing: -.3px; }
+  .header h2  { font-size: 15px; font-weight: 400; opacity: .85; margin-top: 4px; }
+  .badge-version {
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .header-meta { margin-top: 28px; display: flex; gap: 32px; flex-wrap: wrap; }
+  .meta-block label { font-size: 11px; opacity: .7; text-transform: uppercase; letter-spacing: .8px; display: block; }
+  .meta-block span  { font-size: 22px; font-weight: 700; }
+  .meta-block small { font-size: 11px; opacity: .75; display: block; }
+
+  /* ── CONTENEDOR ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+  /* ── RESUMEN EJECUTIVO ── */
+  .exec-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .exec-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .8px; color: var(--gris); margin-bottom: 14px; }
+  .exec-grid  { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .exec-item  { background: var(--gris-light); border-radius: 8px; padding: 14px 16px; }
+  .exec-item .num  { font-size: 28px; font-weight: 700; color: var(--azul); line-height: 1; }
+  .exec-item .lbl  { font-size: 12px; color: var(--gris); margin-top: 4px; }
+  .exec-item.warn .num { color: var(--naranja); }
+
+  /* ── ALERTAS EXCLUIDOS ── */
+  .alert-box {
+    border-left: 4px solid var(--naranja);
+    background: var(--naranja-bg);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    font-size: 13px;
+  }
+  .alert-box strong { color: var(--naranja); }
+
+  /* ── LEYENDA DE DEPENDENCIAS ── */
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    font-size: 12px;
+    align-items: center;
+  }
+  .legend span { font-weight: 600; color: var(--gris); margin-right: 4px; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .dot-libre     { background: var(--verde); }
+  .dot-dep       { background: var(--naranja); }
+  .dot-critico   { background: var(--rojo); }
+  .dot-paralelo  { background: var(--azul-med); }
+
+  /* ── FASES ── */
+  .fase-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gris);
+    font-weight: 700;
+    padding: 6px 0 10px 2px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 14px;
+    margin-top: 10px;
+  }
+
+  /* ── TABLA TICKETS ── */
+  .ticket-table { width: 100%; border-collapse: collapse; }
+  .ticket-table thead th {
+    background: var(--azul);
+    color: var(--white);
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .ticket-table thead th:first-child { border-radius: 8px 0 0 0; }
+  .ticket-table thead th:last-child  { border-radius: 0 8px 0 0; }
+
+  .ticket-row td {
+    padding: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .ticket-row:hover td { background: var(--azul-light); }
+  .ticket-row .cell-inner { padding: 13px 14px; }
+
+  .ticket-row.expanded td { background: var(--azul-light); }
+
+  .ticket-id    { font-weight: 700; color: var(--azul); font-size: 13px; white-space: nowrap; }
+  .ticket-name  { font-weight: 600; font-size: 13px; }
+  .ticket-fase  { font-size: 11px; color: var(--gris); }
+
+  .badge-h {
+    display: inline-block;
+    background: var(--azul);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 3px 10px;
+    white-space: nowrap;
+  }
+  .badge-h.alto    { background: var(--rojo); }
+  .badge-h.medio   { background: var(--naranja); }
+  .badge-h.bajo    { background: var(--verde); }
+
+  .dep-tag {
+    display: inline-block;
+    font-size: 11px;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin: 2px 2px 0 0;
+    font-weight: 600;
+  }
+  .dep-tag.libre    { background: var(--verde-bg);   color: var(--verde);  border: 1px solid #b7dfca; }
+  .dep-tag.bloq     { background: var(--naranja-bg); color: var(--naranja); border: 1px solid #f5c6a0; }
+  .dep-tag.critico  { background: var(--rojo-bg);    color: var(--rojo);   border: 1px solid #f5b4b0; }
+  .dep-tag.paralelo { background: var(--azul-light); color: var(--azul-med); border: 1px solid #a8c4e8; }
+
+  .chevron { float: right; font-size: 16px; color: var(--gris); transition: transform .25s; }
+  .ticket-row.expanded .chevron { transform: rotate(180deg); }
+
+  /* ── DETALLE EXPANDIBLE ── */
+  .detail-row td {
+    padding: 0;
+    background: var(--white);
+    border-bottom: 2px solid var(--azul);
+  }
+  .detail-inner {
+    display: none;
+    padding: 20px 24px 24px;
+    animation: fadeIn .2s ease;
+  }
+  .detail-inner.open { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .detail-section { background: var(--gris-light); border-radius: 8px; padding: 14px 16px; }
+  .detail-section h4 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .7px;
+    color: var(--gris); margin-bottom: 10px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-section ul  { padding-left: 16px; }
+  .detail-section li  { margin-bottom: 5px; font-size: 13px; }
+  .detail-section p   { font-size: 13px; }
+
+  .risk-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 700;
+    border-radius: 4px; padding: 2px 8px; margin-bottom: 6px;
+  }
+  .risk-alto   { background: var(--rojo-bg);    color: var(--rojo); }
+  .risk-medio  { background: var(--naranja-bg); color: var(--naranja); }
+  .risk-bajo   { background: var(--verde-bg);   color: var(--verde); }
+
+  /* ── FASES TABLE ── */
+  .fases-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+  .fases-table th {
+    background: var(--azul);
+    color: var(--white);
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .fases-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  .fases-table tr:last-child td { border-bottom: none; }
+  .fases-table tr:nth-child(even) td { background: #f5f7fa; }
+  .fases-table .total-row td { font-weight: 700; background: var(--azul-light); color: var(--azul); }
+
+  /* ── CONSOLIDADO ── */
+  .consolidado {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    margin-top: 32px;
+  }
+  .consolidado h3 { font-size: 16px; font-weight: 700; color: var(--azul); margin-bottom: 18px; }
+  .cons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .cons-item { background: var(--gris-light); border-radius: 8px; padding: 12px; text-align: center; }
+  .cons-item .c-num { font-size: 22px; font-weight: 700; color: var(--azul); }
+  .cons-item .c-lbl { font-size: 11px; color: var(--gris); margin-top: 2px; }
+  .cons-total { background: var(--azul); color: var(--white); }
+  .cons-total .c-num { color: var(--white); }
+  .cons-total .c-lbl { color: rgba(255,255,255,.8); }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    color: var(--gris);
+    font-size: 12px;
+    padding: 24px;
+    margin-top: 16px;
+  }
+
+  code { background: #e8eaf0; border-radius: 3px; padding: 1px 5px; font-size: 12px; font-family: 'Consolas', monospace; }
+
+  /* ── SECCIONES COLAPSABLES ── */
+  .collapsible-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    margin: 0 !important;
+    padding-right: 4px;
+  }
+  .collapsible-header:hover { color: var(--azul) !important; }
+  .collapsible-header .toggle-arrow {
+    font-size: 14px;
+    color: var(--gris);
+    transition: transform .25s;
+    margin-left: 12px;
+    flex-shrink: 0;
+  }
+  .collapsible.collapsed .toggle-arrow { transform: rotate(-90deg); }
+  .collapsible-content {
+    overflow: hidden;
+    max-height: 9999px;
+    transition: max-height .35s ease, opacity .2s ease, margin-top .3s ease, padding-top .3s ease;
+    margin-top: 14px;
+  }
+  .collapsible.collapsed .collapsible-content {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* ── TABS DE FASES ── */
+  .fase-tabs {
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  .fase-tabs-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--white);
+    border-radius: 10px 10px 0 0;
+    padding: 6px 6px 0;
+    box-shadow: var(--shadow);
+    border-bottom: 2px solid var(--azul);
+  }
+  .fase-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 14px 16px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gris);
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: all .2s;
+    text-align: left;
+    font-family: inherit;
+    border-bottom: 3px solid transparent;
+  }
+  .fase-tab-btn:hover { background: var(--gris-light); color: var(--azul); }
+  .fase-tab-btn.active {
+    background: var(--azul);
+    color: var(--white);
+    border-bottom-color: var(--azul);
+  }
+  .fase-tab-btn .fase-tab-num {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    opacity: .75;
+    margin-bottom: 2px;
+  }
+  .fase-tab-btn .fase-tab-hours {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255,255,255,.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+  .fase-tab-btn:not(.active) .fase-tab-hours {
+    background: var(--azul-light);
+    color: var(--azul);
+  }
+  .fase-tab-panel { display: none; }
+  .fase-tab-panel.active { display: block; }
+  @media (max-width: 700px) {
+    .fase-tabs-nav { flex-direction: column; gap: 2px; }
+    .fase-tab-btn { border-radius: 8px; border-bottom: none; }
+    .fase-tab-btn.active { border-radius: 8px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     REDISEÑO EDITORIAL — sobrescribe estilos previos por cascada
+     ═══════════════════════════════════════════════════════════════ */
+
+  :root {
+    /* OKLCH palette tinted toward brand prussian */
+    --brand-900: oklch(0.20 0.10 265);
+    --brand-700: oklch(0.32 0.13 265);
+    --brand-500: oklch(0.45 0.13 265);
+    --brand-200: oklch(0.92 0.03 265);
+    --brand-100: oklch(0.96 0.02 265);
+    --brand-050: oklch(0.985 0.008 265);
+
+    --ink-900:   oklch(0.20 0.018 265);
+    --ink-700:   oklch(0.34 0.014 265);
+    --ink-500:   oklch(0.50 0.011 265);
+    --ink-300:   oklch(0.72 0.008 265);
+    --ink-200:   oklch(0.86 0.006 265);
+    --ink-100:   oklch(0.94 0.005 265);
+    --ink-050:   oklch(0.97 0.004 265);
+
+    --paper:     oklch(0.985 0.004 265);
+    --surface:   oklch(0.998 0.002 265);
+
+    --positive-700: oklch(0.42 0.085 165);
+    --positive-100: oklch(0.95 0.025 165);
+    --warn-700:     oklch(0.50 0.13 50);
+    --warn-100:     oklch(0.96 0.035 65);
+    --critical-700: oklch(0.46 0.16 25);
+    --critical-100: oklch(0.95 0.035 25);
+
+    /* Legacy aliases (mantienen compatibilidad con clases existentes) */
+    --azul:       var(--brand-700);
+    --azul-med:   var(--brand-500);
+    --azul-light: var(--brand-100);
+    --verde:      var(--positive-700);
+    --verde-bg:   var(--positive-100);
+    --naranja:    var(--warn-700);
+    --naranja-bg: var(--warn-100);
+    --rojo:       var(--critical-700);
+    --rojo-bg:    var(--critical-100);
+    --gris:       var(--ink-500);
+    --gris-light: var(--ink-050);
+    --border:     var(--ink-200);
+    --text:       var(--ink-900);
+    --white:      var(--surface);
+    --shadow:     0 1px 2px oklch(0.20 0.05 265 / 0.04), 0 4px 16px oklch(0.20 0.05 265 / 0.06);
+
+    --serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+    --sans:  'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono:  'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink-900);
+    font-size: 15px;
+    line-height: 1.6;
+    font-feature-settings: 'ss01', 'cv11', 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--brand-900);
+    color: var(--surface);
+    padding: clamp(40px, 6vw, 64px) clamp(24px, 5vw, 56px) clamp(36px, 5vw, 56px);
+    border-bottom: 1px solid oklch(0.30 0.10 265);
+  }
+  .header h1 {
+    font-family: var(--serif);
+    font-size: clamp(28px, 3.6vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--surface);
+  }
+  .header h2 {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 8px;
+    color: oklch(0.85 0.04 265);
+    letter-spacing: 0.005em;
+  }
+  .badge-version {
+    background: transparent;
+    border: 1px solid oklch(1 0 0 / 0.25);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: oklch(0.85 0.04 265);
+  }
+  .header-meta { margin-top: 36px; gap: clamp(28px, 4vw, 56px); }
+  .meta-block label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: oklch(0.78 0.05 265);
+    opacity: 1;
+  }
+  .meta-block span {
+    font-family: var(--serif);
+    font-size: clamp(28px, 3vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-top: 4px;
+    display: block;
+  }
+  .meta-block small {
+    font-size: 12px;
+    color: oklch(0.78 0.04 265);
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+
+  .container { max-width: 1180px; padding: clamp(28px, 4vw, 48px) clamp(20px, 4vw, 40px); }
+
+  /* ── SUMMARY BANNER (estimación / delta) ── */
+  .summary-banner {
+    background: var(--brand-900);
+    color: var(--surface);
+    border-radius: 4px;
+    padding: clamp(20px, 3vw, 32px) clamp(24px, 4vw, 36px);
+    gap: clamp(28px, 4vw, 56px);
+    box-shadow: var(--shadow);
+  }
+  .summary-banner .sb-item label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: oklch(0.78 0.05 265);
+    opacity: 1;
+    text-transform: uppercase;
+  }
+  .summary-banner .sb-item span {
+    font-family: var(--serif);
+    font-size: clamp(26px, 2.8vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    display: block;
+    margin-top: 4px;
+  }
+  .summary-banner .sb-item small {
+    font-size: 12px;
+    color: oklch(0.78 0.04 265);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ── EXEC-CARD (resumen ejecutivo, comparativa) ── */
+  .exec-card {
+    background: var(--surface);
+    border: 1px solid var(--ink-200);
+    border-radius: 4px;
+    box-shadow: none;
+    padding: clamp(24px, 3vw, 36px);
+    margin-bottom: 24px;
+  }
+  .exec-card h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink-900);
+    text-transform: none;
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ink-100);
+  }
+  .exec-grid { gap: 1px; background: var(--ink-100); border: 1px solid var(--ink-100); border-radius: 4px; overflow: hidden; }
+  .exec-item {
+    background: var(--surface);
+    border-radius: 0;
+    padding: 18px 22px;
+  }
+  .exec-item .num {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--brand-700);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .exec-item .lbl {
+    font-size: 12px;
+    color: var(--ink-500);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .exec-item.warn .num { color: var(--warn-700); }
+
+  /* ── ALERT BOX (frentes excluidos) — sin border-left ── */
+  .alert-box {
+    border: 1px solid var(--ink-200);
+    border-left: 1px solid var(--ink-200);
+    background: var(--ink-050);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--ink-700);
+  }
+  .alert-box strong {
+    color: var(--ink-900);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--serif);
+    font-size: 14px;
+  }
+
+  /* ── LEYENDA ── */
+  .legend {
+    background: var(--surface);
+    border: 1px solid var(--ink-200);
+    border-radius: 4px;
+    box-shadow: none;
+    padding: 12px 20px;
+    font-size: 12px;
+    color: var(--ink-700);
+  }
+  .legend span { color: var(--ink-500); font-weight: 500; }
+  .dot { width: 8px; height: 8px; }
+
+  /* ── FASE LABEL ── */
+  .fase-label {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+    text-transform: none;
+    border-bottom: 1px solid var(--ink-200);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+
+  /* ── TABLAS ── */
+  .ticket-table thead th,
+  .comp-table th,
+  .fases-table th {
+    background: var(--ink-050);
+    color: var(--ink-700);
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--ink-200);
+  }
+  .ticket-table thead th:first-child,
+  .ticket-table thead th:last-child { border-radius: 0; }
+  .ticket-row td { background: var(--surface); border-bottom: 1px solid var(--ink-100); }
+  .ticket-row:hover td { background: var(--brand-050); }
+  .ticket-row.expanded td { background: var(--brand-050); }
+  .ticket-id {
+    font-family: var(--mono);
+    color: var(--ink-700);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .ticket-name {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+  }
+  .ticket-fase {
+    font-size: 11px;
+    color: var(--ink-500);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .comp-table { font-size: 13px; }
+  .comp-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--ink-100);
+    color: var(--ink-700);
+  }
+  .comp-table tr:nth-child(even) td { background: var(--ink-050); }
+  .comp-table .total-row td {
+    background: var(--brand-100);
+    color: var(--brand-900);
+    font-weight: 600;
+    border-top: 1.5px solid var(--brand-700);
+    border-bottom: none;
+  }
+  .comp-table .val-h {
+    color: var(--ink-300);
+    text-decoration: line-through;
+    font-variant-numeric: tabular-nums;
+  }
+  .comp-table .pro-h {
+    color: var(--ink-900);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .comp-table .delta-up {
+    color: var(--ink-700);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .comp-table .delta-eq {
+    color: var(--ink-500);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── BADGES — sin border-radius pill, peso tipográfico ── */
+  .badge-h {
+    background: var(--brand-700);
+    color: var(--surface);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 2px;
+    padding: 3px 8px;
+  }
+  .badge-h.alto    { background: var(--critical-700); }
+  .badge-h.medio   { background: var(--warn-700); }
+  .badge-h.bajo    { background: var(--positive-700); }
+
+  .re-est-badge {
+    background: transparent;
+    border: 1px solid var(--ink-200);
+    border-radius: 2px;
+    padding: 4px 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-700);
+    font-weight: 400;
+  }
+  .re-est-badge .arrow { color: var(--ink-300); }
+  .re-est-badge .new-h { color: var(--ink-900); font-weight: 600; }
+
+  .delta-pill {
+    background: transparent;
+    color: var(--ink-700);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 2px;
+    padding: 2px 6px;
+    border: 1px solid var(--ink-200);
+  }
+  .delta-pos { color: var(--ink-700); border-color: var(--ink-200); background: transparent; }
+  .delta-zero { color: var(--positive-700); border-color: var(--positive-100); background: var(--positive-100); }
+
+  .dep-tag {
+    background: transparent;
+    border: 1px solid var(--ink-200);
+    border-radius: 2px;
+    padding: 2px 8px;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--ink-700);
+  }
+  .dep-tag.libre    { color: var(--positive-700); border-color: var(--positive-100); background: var(--positive-100); }
+  .dep-tag.bloq     { color: var(--warn-700); border-color: var(--warn-100); background: var(--warn-100); }
+  .dep-tag.critico  { color: var(--critical-700); border-color: var(--critical-100); background: var(--critical-100); }
+  .dep-tag.paralelo { color: var(--brand-700); border-color: var(--brand-100); background: var(--brand-100); }
+
+  /* ── DETAIL SECTIONS ── */
+  .detail-grid { gap: 16px; }
+  .detail-section {
+    background: var(--ink-050);
+    border-radius: 4px;
+    padding: 16px 18px;
+    border: none;
+  }
+  .detail-section h4 {
+    font-family: var(--sans);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-500);
+    font-weight: 600;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 10px;
+  }
+  .detail-section p, .detail-section li {
+    font-size: 13px;
+    color: var(--ink-700);
+    line-height: 1.55;
+  }
+  .detail-section ul { padding-left: 18px; }
+  .detail-section li { margin-bottom: 6px; }
+
+  .risk-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border-radius: 2px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+  }
+  .risk-alto   { background: var(--critical-100); color: var(--critical-700); }
+  .risk-medio  { background: var(--warn-100); color: var(--warn-700); }
+  .risk-bajo   { background: var(--positive-100); color: var(--positive-700); }
+
+  /* ── EVIDENCE BOX — sin border-left ── */
+  .evidence-box {
+    background: var(--brand-050);
+    border: 1px solid var(--brand-100);
+    border-left: 1px solid var(--brand-100);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--ink-700);
+    margin-top: 12px;
+  }
+  .evidence-box strong {
+    color: var(--brand-900);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  /* ── FASES TABLE ── */
+  .fases-table { font-size: 12.5px; }
+  .fases-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ink-100);
+    color: var(--ink-700);
+  }
+  .fases-table tr:nth-child(even) td { background: var(--ink-050); }
+  .fases-table .total-row td {
+    background: var(--brand-100);
+    color: var(--brand-900);
+    font-weight: 600;
+    border-top: 1.5px solid var(--brand-700);
+  }
+
+  /* ── CONSOLIDADO ── */
+  .consolidado {
+    background: var(--surface);
+    border: 1px solid var(--ink-200);
+    border-radius: 4px;
+    box-shadow: none;
+    padding: clamp(24px, 3vw, 36px);
+    margin-top: 32px;
+  }
+  .consolidado h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink-900);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ink-100);
+  }
+  .cons-grid { gap: 1px; background: var(--ink-100); border: 1px solid var(--ink-100); border-radius: 4px; overflow: hidden; }
+  .cons-item {
+    background: var(--surface);
+    border-radius: 0;
+    padding: 16px 18px;
+    text-align: left;
+  }
+  .cons-item .c-num {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--brand-700);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .cons-item .c-lbl {
+    font-size: 11px;
+    color: var(--ink-500);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+  .cons-total { background: var(--brand-900); }
+  .cons-total .c-num { color: var(--surface); }
+  .cons-total .c-lbl { color: oklch(0.78 0.04 265); }
+
+  /* ── TABS ── */
+  .fase-tabs { position: relative; }
+  .fase-tabs::before {
+    content: 'Seleccioná una fase para ver el detalle de los tickets';
+    display: block;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin-bottom: 10px;
+  }
+  .fase-tabs-nav {
+    background: var(--ink-050);
+    border: 1px solid var(--ink-200);
+    border-radius: 6px;
+    border-bottom: 1px solid var(--ink-200);
+    padding: 4px;
+    box-shadow: none;
+    gap: 4px;
+  }
+  .fase-tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    border-bottom: 1px solid transparent;
+    padding: 12px 18px 14px;
+    color: var(--ink-700);
+    font-family: var(--sans);
+    position: relative;
+    transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .fase-tab-btn:hover {
+    background: var(--surface);
+    color: var(--ink-900);
+    border-color: var(--ink-200);
+  }
+  .fase-tab-btn.active {
+    background: var(--surface);
+    color: var(--ink-900);
+    border-color: var(--ink-200);
+    box-shadow: 0 1px 2px oklch(0.20 0.05 265 / 0.06), 0 0 0 1px var(--brand-700);
+  }
+  .fase-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--brand-700);
+    border-radius: 2px;
+  }
+  .fase-tab-btn .fase-tab-num {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink-500);
+    font-weight: 500;
+  }
+  .fase-tab-btn.active .fase-tab-num { color: var(--brand-700); }
+  .fase-tab-btn .fase-tab-hours {
+    font-family: var(--mono);
+    background: var(--ink-100);
+    color: var(--ink-700);
+    font-weight: 500;
+    border-radius: 2px;
+    padding: 2px 8px;
+  }
+  .fase-tab-btn.active .fase-tab-hours {
+    background: var(--brand-100);
+    color: var(--brand-900);
+  }
+  .fase-tab-btn:hover .fase-tab-hours {
+    background: var(--surface);
+  }
+  .fase-tab-btn.active:hover .fase-tab-hours {
+    background: var(--brand-100);
+  }
+
+  /* ── COLLAPSIBLE HEADER ── */
+  .collapsible-header { color: var(--ink-900); }
+  .collapsible-header:hover { color: var(--brand-700) !important; }
+  .collapsible-header .toggle-arrow { color: var(--ink-300); font-size: 12px; }
+
+  /* ── CODE ── */
+  code {
+    font-family: var(--mono);
+    background: var(--ink-050);
+    border: 1px solid var(--ink-100);
+    border-radius: 2px;
+    padding: 1px 5px;
+    font-size: 11.5px;
+    color: var(--ink-900);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    color: var(--ink-500);
+    font-size: 12px;
+    padding: 32px 24px;
+    border-top: 1px solid var(--ink-200);
+    margin-top: 32px;
+  }
+
+  /* ── BLOCK DIVIDER ── */
+  .block-divider {
+    margin: 48px 0 24px;
+    padding: 28px 0 20px;
+    border-top: 1.5px solid var(--ink-900);
+    border-bottom: 1px solid var(--ink-200);
+  }
+  .block-divider-num {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brand-700);
+    margin-bottom: 6px;
+  }
+  .block-divider-title {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.5vw, 30px);
+    font-weight: 500;
+    color: var(--ink-900);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .block-divider-meta {
+    font-size: 13px;
+    color: var(--ink-500);
+    line-height: 1.5;
+  }
+
+
+  /* ── DELTA BREAKDOWN (descomposición del delta en banner) ── */
+  .summary-banner .delta-summary .delta-breakdown {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 14px 0 0;
+    border-top: 1px solid oklch(1 0 0 / 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .summary-banner .delta-summary .delta-breakdown li {
+    display: grid;
+    grid-template-columns: 56px 32px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    line-height: 1.45;
+  }
+  .summary-banner .delta-summary .delta-breakdown .dbk-amount {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: oklch(0.85 0.10 80);
+    letter-spacing: 0;
+  }
+  .summary-banner .delta-summary .delta-breakdown .dbk-pct {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: oklch(0.78 0.04 265);
+    text-align: right;
+    letter-spacing: 0.02em;
+  }
+  .summary-banner .delta-summary .delta-breakdown .dbk-label {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 400;
+    color: oklch(0.85 0.04 265);
+    letter-spacing: 0.005em;
+  }
+
+  /* ── BLOQUE TABS (tabs principales A/B) ── */
+  .bloque-tabs-main {
+    margin: 36px 0 24px;
+  }
+  .bloque-tabs-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--brand-700);
+    margin-bottom: 0;
+  }
+  .bloque-tab-btn {
+    flex: 1;
+    background: var(--ink-050);
+    border: 1px solid var(--ink-200);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 18px 28px;
+    font-family: var(--sans);
+    color: var(--ink-700);
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+    text-align: left;
+    margin-right: 2px;
+    margin-bottom: -1px;
+  }
+  .bloque-tab-btn:last-child { margin-right: 0; }
+  .bloque-tab-btn:hover {
+    background: var(--surface);
+    color: var(--ink-900);
+  }
+  .bloque-tab-btn.active {
+    background: var(--surface);
+    color: var(--ink-900);
+    border-color: var(--brand-700);
+    border-bottom: 2px solid var(--surface);
+    box-shadow: 0 -2px 0 0 var(--brand-700);
+  }
+  .bloque-tab-btn .bloque-tab-num {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin-bottom: 6px;
+  }
+  .bloque-tab-btn.active .bloque-tab-num { color: var(--brand-700); }
+  .bloque-tab-btn .bloque-tab-title {
+    display: block;
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .bloque-tab-btn .bloque-tab-meta {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-500);
+  }
+  .bloque-tab-btn.active .bloque-tab-meta { color: var(--ink-700); }
+  .bloque-panel { display: none; padding-top: 24px; }
+  .bloque-panel.active { display: block; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Plan Integral — Salesforce TyA</h1>
+      <h2>Tierra y Armonía · Re-estimación de issues + pre-trabajo de organización · ProContacto</h2>
+    </div>
+    <div class="badge-version">ProContacto · Abril 2026</div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-block">
+      <label>Total integral</label>
+      <span>945 h</span>
+      <small>Valtech 756 h · Delta +189 h (+25%)</small>
+    </div>
+    <div class="meta-block">
+      <label>Bloque A · Issues</label>
+      <span>832 h</span>
+      <small>11 tickets · Valtech +10%</small>
+    </div>
+    <div class="meta-block">
+      <label>Bloque B · Pre-trabajo</label>
+      <span>113 h</span>
+      <small>9 frentes de limpieza · 15% de Valtech</small>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CONTAINER ═══════════════════ -->
+<div class="container">
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div class="exec-card collapsible">
+    <h3 class="collapsible-header" onclick="toggleSection(this)">Resumen ejecutivo — Análisis técnico<span class="toggle-arrow">▼</span></h3>
+    <div class="collapsible-content">
+    <div class="exec-grid">
+      <div class="exec-item">
+        <div class="num">11</div>
+        <div class="lbl">Tickets re-estimados · Bloque A</div>
+      </div>
+      <div class="exec-item">
+        <div class="num">9</div>
+        <div class="lbl">Frentes de limpieza · Bloque B</div>
+      </div>
+      <div class="exec-item">
+        <div class="num">171</div>
+        <div class="lbl">Flows record-triggered en producción</div>
+      </div>
+      <div class="exec-item">
+        <div class="num">14</div>
+        <div class="lbl">Apex Triggers · 4 fuera de patrón</div>
+      </div>
+      <div class="exec-item warn">
+        <div class="num">49</div>
+        <div class="lbl">Flows sin control de recursión (BUG T174)</div>
+      </div>
+      <div class="exec-item warn">
+        <div class="num">437</div>
+        <div class="lbl">Campos candidatos a depurar (~37%)</div>
+      </div>
+    </div>
+    </div><!-- /collapsible-content -->
+  </div>
+
+  <!-- BANNER COMPARACIÓN DE ESTIMACIONES -->
+  <div class="summary-banner">
+    <div class="sb-item">
+      <label>Estimación Valtech</label>
+      <span style="text-decoration:line-through;opacity:.7">756 h</span>
+      <small>Documento original feb 2026</small>
+    </div>
+    <div class="sb-item">
+      <label>Plan Integral ProContacto</label>
+      <span>945 h</span>
+      <small>Issues 832 h + pre-trabajo 113 h</small>
+    </div>
+    <div class="sb-item delta-summary">
+      <label>Delta vs Valtech</label>
+      <span style="color:oklch(0.85 0.10 80)">+189 h · +25%</span>
+      <ul class="delta-breakdown">
+        <li>
+          <span class="dbk-amount">+76 h</span>
+          <span class="dbk-pct">10%</span>
+          <span class="dbk-label">Re-estimación de issues</span>
+        </li>
+        <li>
+          <span class="dbk-amount">+113 h</span>
+          <span class="dbk-pct">15%</span>
+          <span class="dbk-label">Pre-trabajo de limpieza</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TABLA COMPARATIVA GLOBAL -->
+  <div class="exec-card collapsible">
+    <h3 class="collapsible-header" onclick="toggleSection(this)">Comparativa por ticket<span class="toggle-arrow">▼</span></h3>
+    <div class="collapsible-content">
+    <table class="comp-table">
+      <thead><tr><th>Ticket</th><th>Nombre</th><th>Valtech</th><th>ProContacto</th><th>Delta</th><th>Razón principal</th></tr></thead>
+      <tbody>
+        <tr><td>#26</td><td>Reasignación de Prospecto</td><td class="val-h">43 h</td><td class="pro-h">47 h</td><td class="delta-up">+4 h</td><td>Flow de 1.776 líneas + flow hermano PROMOCIÓN — testing de volumen y monitoreo post-deploy</td></tr>
+        <tr><td>#174</td><td>CPU time limit exceeded</td><td class="val-h">46 h</td><td class="pro-h">60 h</td><td class="delta-up">+14 h</td><td>49 flows sobre Lead/Prospecto, <code>Service_OportunidadTrigger</code> de 1.141 líneas — testing de volumen y regresión de cadena</td></tr>
+        <tr><td>#76</td><td>Módulo de promociones</td><td class="val-h">54 h</td><td class="pro-h" style="color:var(--positive-700)">40 h</td><td style="color:var(--positive-700);font-weight:600">−14 h</td><td>Avance significativo: <code>BuscarPromociones</code> 179 líneas, LWC <code>seleccionarPlanVenta</code> + flows chatbot promoción ya armados</td></tr>
+        <tr><td>#79</td><td>Reportes y tableros</td><td class="val-h">51 h</td><td class="pro-h">49 h</td><td style="color:var(--positive-700);font-weight:600">−2 h</td><td>327 reports y 20 dashboards activos — Adoption Dashboards recientes cubren parte del alcance</td></tr>
+        <tr><td>#133</td><td>Comisiones EK → SF</td><td class="val-h">69 h</td><td class="pro-h">87 h</td><td class="delta-up">+18 h</td><td><code>CreacionComisiones</code> carga TODOS los Users sin filtro, código muerto comentado, sin retry/DLQ</td></tr>
+        <tr><td>#143</td><td>Reversar etapas CyT</td><td class="val-h">56 h</td><td class="pro-h">62 h</td><td class="delta-up">+6 h</td><td><code>AvanzaEtapaENK</code> con 7 SOQL en cascada + coordinación con EK; campo <code>Reversar_etapa__c</code> ya existe</td></tr>
+        <tr><td>#173</td><td>Ajustes de ventas</td><td class="val-h">51 h</td><td class="pro-h">52 h</td><td class="delta-up">+1 h</td><td>Objeto, layouts y 6 flows de aprobación ya armados — extender lógica para etapas posteriores</td></tr>
+        <tr><td>#75</td><td>Formato oferta y contrato</td><td class="val-h">72 h</td><td class="pro-h">78 h</td><td class="delta-up">+6 h</td><td><code>Call_FAD_WS</code> (605 líneas, integración FAD) ya armada; controllers de formato y revisión legal generan retrabajo</td></tr>
+        <tr><td>#157</td><td>Funciones Plaza Vallarta</td><td class="val-h">78 h</td><td class="pro-h">76 h</td><td style="color:var(--positive-700);font-weight:600">−2 h</td><td>CustomMetadata <code>Producto_Vallarta</code> + flow <code>CheckProductoVallarta</code> + tests ya armados — extender funciones específicas</td></tr>
+        <tr><td>#154/170</td><td>Homologación Opp/CyT + permisos</td><td class="val-h">104 h</td><td class="pro-h">129 h</td><td class="delta-up">+25 h</td><td><code>Service_OportunidadTrigger</code> 1.141 líneas, cadena <code>OportunidadCalloutChain</code> → <code>EnvioPlanPago</code> → <code>CambioEtapa</code></td></tr>
+        <tr><td>#146</td><td>Integración Ecommerce → SF</td><td class="val-h">132 h</td><td class="pro-h">152 h</td><td class="delta-up">+20 h</td><td><code>HTTPMockFactory</code> solo 22 líneas — desarrollo desde cero. Flows de routing reusables como entrada</td></tr>
+        <tr class="total-row"><td colspan="2"><strong>TOTAL Bloque A · Issues</strong></td><td class="val-h"><strong>756 h</strong></td><td class="pro-h"><strong>832 h</strong></td><td class="delta-up"><strong>+76 h (+10%)</strong></td><td>10% sobre Valtech</td></tr>
+      </tbody>
+    </table>
+    </div><!-- /collapsible-content -->
+  </div>
+
+  <!-- FRENTES EXCLUIDOS -->
+  <div class="alert-box">
+    <strong>Frentes fuera de este plan</strong> — requieren discovery/presupuesto separado:
+    Personalización de reportes por división · Operación Digital Engagement en PRD ·
+    Levantamiento proyectos Digital Engagement (8/10) · Soporte adopción DE · Service Cloud Discovery.
+  </div>
+
+  <!-- LEYENDA -->
+  <div class="legend">
+    <span>Estado de dependencia:</span>
+    <div><span class="dot dot-libre"></span>Libre para iniciar</div>
+    <div><span class="dot dot-dep"></span>Bloqueado por otro ticket</div>
+    <div><span class="dot dot-critico"></span>Crítico / Riesgo alto</div>
+    <div><span class="dot dot-paralelo"></span>Ejecutable en paralelo</div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       NAVEGACIÓN PRINCIPAL — BLOQUE A vs BLOQUE B
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="bloque-tabs-main">
+    <div class="bloque-tabs-nav" role="tablist">
+      <button class="bloque-tab-btn active" type="button" onclick="switchBloque('blockA')" role="tab">
+        <span class="bloque-tab-num">Bloque A</span>
+        <span class="bloque-tab-title">Issues del proyecto formal</span>
+        <span class="bloque-tab-meta">11 tickets · <strong>832 h</strong> · Valtech +10%</span>
+      </button>
+      <button class="bloque-tab-btn" type="button" onclick="switchBloque('blockB')" role="tab">
+        <span class="bloque-tab-num">Bloque B</span>
+        <span class="bloque-tab-title">Pre-trabajo de limpieza</span>
+        <span class="bloque-tab-meta">9 frentes · <strong>113 h</strong> · 15% de Valtech</span>
+      </button>
+    </div>
+
+    <div class="bloque-panel active" id="blockA">
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       BLOQUE A · ISSUES DEL PROYECTO FORMAL — 832 h
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="block-divider">
+    <div class="block-divider-num">Bloque A</div>
+    <div class="block-divider-title">Issues del proyecto formal</div>
+    <div class="block-divider-meta">11 tickets · 832 h · Valtech 756 h + 10% por re-estimación honesta</div>
+  </div>
+
+  <!-- ════════════ TABS DE FASES ════════════ -->
+  <div class="fase-tabs">
+    <div class="fase-tabs-nav" role="tablist">
+      <button class="fase-tab-btn active" type="button" onclick="switchFase('fase1')" role="tab">
+        <span class="fase-tab-num">A · Fase 1</span>
+        Estabilización y deuda técnica
+        <span class="fase-tab-hours">199 h</span>
+      </button>
+      <button class="fase-tab-btn" type="button" onclick="switchFase('fase2')" role="tab">
+        <span class="fase-tab-num">A · Fase 2</span>
+        Núcleo de ventas
+        <span class="fase-tab-hours">198 h</span>
+      </button>
+      <button class="fase-tab-btn" type="button" onclick="switchFase('fase3')" role="tab">
+        <span class="fase-tab-num">A · Fase 3</span>
+        Integraciones y formatos
+        <span class="fase-tab-hours">435 h</span>
+      </button>
+    </div>
+
+    <!-- ════════════ FASE 1 ════════════ -->
+    <div class="fase-tab-panel active" id="fase1" role="tabpanel">
+    <div class="fase-label">Fase 1 — Estabilización y deuda técnica (Tickets independientes, sin bloqueos)</div>
+  <table class="ticket-table">
+    <thead>
+      <tr>
+        <th style="width:110px">Ticket</th>
+        <th>Nombre</th>
+        <th style="width:100px">Horas</th>
+        <th style="width:140px">Dependencia</th>
+        <th style="width:30px"></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- T26 -->
+      <tr class="ticket-row" onclick="toggle('t26')">
+        <td><div class="cell-inner"><span class="ticket-id">#26</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Error flujo Reasignación de Prospecto</div>
+          <div class="ticket-fase">Sales Cloud · Governor limits</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span class="val-h" style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">43h</span><span class="arrow">→</span><span class="new-h">47 h</span></div>
+          <span class="delta-pill delta-pos">+4 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag critico">Crítico</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t26">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Corregir error <code>Too many query rows</code> en el flow <code>Reasignacion_de_prospecto</code> y estabilizar la ejecución diaria programada.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>El flow <code>Reasignacion_de_prospecto</code> itera sobre leads sin paginación. Con el volumen actual de prospectos TyA supera el límite de 50.000 filas por transacción.</li>
+              <li>También existe <code>Reasignaci_n_de_prospectos_PROMOCI_N</code> — flujo similar que podría tener el mismo problema.</li>
+              <li>Solución recomendada: convertir a un <strong>Batch Apex</strong> con tamaño de chunk controlado, similar al patrón ya existente en <code>BatchFilaAsesoresTurnoNocturno</code>.</li>
+              <li>El handler <code>Handler_CandidatosTrigger</code> + <code>Service_CandidatosTrigger</code> también participa en la reasignación — revisar recursividad.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag libre">Libre para iniciar</span>
+            <p style="margin-top:8px">No bloquea ni es bloqueado por ningún otro ticket. Prioridad alta porque afecta operación diaria.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li>Si el batch falla silenciosamente, los prospectos quedan sin asignar — impacto directo en ventas.</li>
+              <li>Revisar si hay <code>@future</code> calls dentro del flow que lo hacen incompatible con batch.</li>
+              <li>Requiere prueba de volumen con datos reales antes del despliegue productivo.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+2 h):</strong> El flow <code>Reasignacion_de_prospecto</code> tiene 1.776 líneas con 6 bloques SOQL sin paginación. Existe además <code>Reasignaci_n_de_prospectos_PROMOCI_N</code> con el mismo patrón — ambos deben refactorizarse. El patrón Batch ya existe en la solución (<code>BatchFilaAsesoresTurnoNocturno</code>) y reduce el trabajo de armado del scheduler; el ajuste agrega solo 2 h por incluir el flow PROMOCIÓN al alcance.</div>
+      </div></td></tr>
+
+      <!-- T174 -->
+      <tr class="ticket-row" onclick="toggle('t174')">
+        <td><div class="cell-inner"><span class="ticket-id">#174</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Flujo de Prospecto — Apex CPU time limit exceeded</div>
+          <div class="ticket-fase">Sales Cloud · Performance</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">46h</span><span class="arrow">→</span><span class="new-h">60 h</span></div>
+          <span class="delta-pill delta-pos">+14 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag critico">Crítico</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t174">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Eliminar fallas de CPU en el flujo programado de prospectos y mejorar el rendimiento general.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>El trigger <code>CandidatosTrigger</code> dispara <code>Handler_CandidatosTrigger</code> → <code>Service_CandidatosTrigger</code>. Con 171 flows activos y múltiples triggers en <code>Lead</code>, el CPU overhead acumulado es alto.</li>
+              <li>La solución usa el objeto <code>ActivarDesactivarTriggers__c</code> (Custom Setting) para on/off de triggers — herramienta útil para debugging en producción.</li>
+              <li>Revisar el flow <code>VigenciaProspectos</code> + flows de conteo de eventos (<code>Prospecto_ConteoTareas</code>, <code>Prospecto_EventosCreados</code>) que ejecutan en cadena.</li>
+              <li>Los flows de prospecto son los más numerosos de la solución (35+ relacionados con Lead).</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag libre">Libre para iniciar</span>
+            <span class="dep-tag paralelo">Ejecutable con T26</span>
+            <p style="margin-top:8px">Comparte el objeto Lead/Prospecto con T26. Recomendable atacar en paralelo pero con el mismo recurso para evitar conflictos.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li>Con 35+ flows sobre Lead, cualquier optimización mal aplicada puede romper otro flow.</li>
+              <li>Necesario activar límites de debug en PRD (el error ya ocurre allí).</li>
+              <li>El handler tiene control de recursión (<code>preventRecursionUpdate</code>) pero los flows no — posible causa raíz.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+21 h):</strong> Hay 49 flows que referencian Lead/Prospecto. <code>Service_OportunidadTrigger</code> tiene 1.141 líneas con 6 métodos encadenados. El handler tiene <code>preventRecursionUpdate</code> pero los flows no — cualquier optimización mal aplicada puede romper 49 flows. Las pruebas de volumen y la regresión sobre la cadena completa son el rubro más crítico.</div>
+      </div></td></tr>
+
+      <!-- T76 -->
+      <tr class="ticket-row" onclick="toggle('t76')">
+        <td><div class="cell-inner"><span class="ticket-id">#76</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Módulo de promociones</div>
+          <div class="ticket-fase">Sales Cloud · Catálogo / Quote</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge" style="background:var(--positive-100);border-color:var(--positive-100);color:var(--positive-700)"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">54h</span><span style="color:var(--positive-700)">→</span><span class="new-h" style="color:var(--positive-700)">40 h</span></div>
+          <span class="delta-pill" style="background:var(--positive-100);color:var(--positive-700);border-color:var(--positive-100)">−14 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag libre">Libre</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t76">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Completar el módulo de promociones por proyecto, etapa y prototipo y asegurar estabilidad en PRD.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>La clase <code>BuscarPromociones</code> (@AuraEnabled) tiene <strong>179 líneas</strong> y filtra <code>Catalogo_de_promocion__c</code> por proyecto, ubicación, prototipo, centro de costos y vigencia. La lógica de filtros ya está implementada y operativa.</li>
+              <li>Los objetos involucrados: <code>Catalogo_de_promocion__c</code>, <code>Promocion_de_la_Venta__c</code>, <code>Quote</code>, <code>Opportunity</code>, <code>Inventario__c</code>.</li>
+              <li>Existen los LWC <code>visualizarPromociones</code> y <code>seleccionarPlanVenta</code> que consumen la clase — ambos componentes ya están construidos.</li>
+              <li>Flows relacionados: <code>Actualiza_Opp_en_Promocion_de_la_venta</code>, <code>Promocion_de_inventario_Valida_etapa</code>, <code>Promocion_de_inventario_Vigencia_de_promocion</code>.</li>
+              <li>El módulo digital ya tiene componentes armados: <code>Enrutamiento_Promocion_Digital</code> + 3 flows <code>Chatbot_promocion_digital_*</code> — listos para integrarse al alcance.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag libre">Libre para iniciar</span>
+            <p style="margin-top:8px">No tiene bloqueos pero su resultado alimenta T154/170 (homologación con EK). Conviene cerrarlo en Fase 1.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-medio">MEDIO</span>
+            <ul>
+              <li>La query en <code>BuscarPromociones</code> usa múltiples condiciones OR — riesgo de resultados incorrectos si los campos de catálogo están mal poblados.</li>
+              <li>El flow <code>Promocion_de_inventario_Conteo_de_promociones_aprobadas</code> puede entrar en conflicto con cambios en el catálogo.</li>
+              <li>Confirmar si aplica para Vallarta también (el CustomMetadata <code>ConfiguracionEsquemas.Producto_Vallarta</code> sugiere que sí).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box" style="background:var(--positive-100);border-color:var(--positive-100);color:var(--positive-700)"><strong style="color:var(--positive-700)">Estimación con descuento (−10 h vs Valtech):</strong> el módulo está relativamente avanzado. <code>BuscarPromociones</code> tiene 179 líneas operativas, los LWC <code>visualizarPromociones</code> y <code>seleccionarPlanVenta</code> están construidos y existen 3 flows de chatbot promoción digital (<code>Chatbot_promocion_digital_*</code>) reusables. La mayor parte del trabajo ya está hecha; solo queda validar la query con condiciones OR, confirmar Vallarta y hacer testing + UAT.</div>
+      </div></td></tr>
+
+      <!-- T79 -->
+      <tr class="ticket-row" onclick="toggle('t79')">
+        <td><div class="cell-inner"><span class="ticket-id">#79</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Reportes y tableros en producción</div>
+          <div class="ticket-fase">Reportería · KPIs operativos</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">51h</span><span class="arrow">→</span><span class="new-h">49 h</span></div>
+          <span class="delta-pill" style="background:var(--positive-100);color:var(--positive-700);border-color:var(--positive-100)">−2 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag paralelo">Paralelo</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t79">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Asegurar exactitud y adopción de tableros y reportes en ambiente productivo.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>El ambiente tiene <strong>20 dashboards y 327 reports</strong> activos. Los más relevantes para la operación TyA están en los folders <code>Digital TyA Dashboards</code> (2), <code>Sales and Marketing Dashboards</code> (3), <code>Service Dashboards</code> (3), <code>Reportes TyA 2024</code>, <code>Comisiones</code> (7), <code>Digital Engagement TyA - Reportes</code> (13), <code>Oportunidades</code>, <code>Perfil del cliente TyA</code>, <code>Ventas</code>, <code>Alamar</code>.</li>
+              <li>Recientemente se incorporaron tableros de adopción: <code>Salesforce Adoption Dashboards</code> (3) + <code>DB - Adoption</code> (42 reports) — relevantes para medir uso del CRM.</li>
+              <li>El alcance se centra en reportes y dashboards estándar de Salesforce (no requiere Tableau CRM/CRM Analytics, que no está habilitado en el ambiente actual y por lo tanto no se contempla).</li>
+              <li>Existe la clase <code>ReporteDeGarantiaCl</code> y flows de garantía relacionados con la generación de reportes operativos.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag paralelo">Ejecutable en paralelo</span>
+            <p style="margin-top:8px">Independiente de todos los demás tickets. Puede avanzar en cualquier momento con un recurso dedicado.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-medio">MEDIO</span>
+            <ul>
+              <li>Volumen alto de reports (327) implica priorizar — definir con TyA qué subset es prioritario para no abrir un alcance demasiado amplio.</li>
+              <li>Los reportes operativos suelen tener filtros y fórmulas que dependen de campos modificados por otros tickets — coordinar el orden de cambios.</li>
+              <li>Los superusuarios y áreas de negocio iteran fuertemente sobre cifras y formatos — planear varias rondas de UAT.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+7 h):</strong> el ambiente tiene 327 reports y 20 dashboards activos. Los <code>Salesforce Adoption Dashboards</code> (3) y <code>DB - Adoption</code> (42 reports) ya armados cubren la parte de medición/adopción del alcance. El esfuerzo se concentra en priorizar el subset operativo (Comisiones, Oportunidades, Ventas, Perfil del cliente), iterar dashboards y reports propios y absorber las múltiples rondas de UAT con superusuarios.</div>
+      </div></td></tr>
+
+    </tbody>
+  </table>
+
+    </div><!-- /fase1 -->
+
+    <!-- ════════════ FASE 2 ════════════ -->
+    <div class="fase-tab-panel" id="fase2" role="tabpanel">
+    <div class="fase-label" style="margin-top:0">Fase 2 — Núcleo de ventas (Requieren T26/T174 resueltos o en curso)</div>
+  <table class="ticket-table">
+    <thead>
+      <tr>
+        <th style="width:110px">Ticket</th>
+        <th>Nombre</th>
+        <th style="width:100px">Horas</th>
+        <th style="width:140px">Dependencia</th>
+        <th style="width:30px"></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- T143 -->
+      <tr class="ticket-row" onclick="toggle('t143')">
+        <td><div class="cell-inner"><span class="ticket-id">#143</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Reversar etapas en Crédito y Titulación</div>
+          <div class="ticket-fase">Sales Cloud · CyT · Flujo de etapas</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">56h</span><span class="arrow">→</span><span class="new-h">62 h</span></div>
+          <span class="delta-pill delta-pos">+6 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Precede a T154</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t143">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Permitir reversa controlada de etapas en Crédito y Titulación respetando reglas de negocio y permisos de perfil.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>El objeto <code>Credito_y_titulacion__c</code> maneja etapas a través de <code>Etapa_Actual__c</code> y <code>Etapa_Siguiente__c</code> (campos lookup a <code>Etapas_de_Esquema__c</code>). La lógica de avance está en <code>Service_CreditoyTitulacionTrigger</code> y en <code>AvanzaEtapaENK</code> (REST endpoint que recibe llamadas de Enkontrol).</li>
+              <li>El campo <code>Avance_de_etapa__c</code> controla el progreso. El trigger <code>CreditoyTitulacionTrigger</code> llama al handler/service correspondiente.</li>
+              <li>Para la reversa: el campo <code>Reversar_etapa__c</code> ya existe en el objeto, hay que armar la lógica que lo consume y validar que el registro CyT no tenga <code>Firma_Cliente__c</code> ni <code>Restructuracion__c</code> populados (lo valida <code>CambioEsquema</code>) — misma regla debe aplicar para reversa.</li>
+              <li>Requiere control por perfil: el service ya tiene precedente con <code>validaAgenteID</code>.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag bloq">Precede a T154/170</span>
+            <p style="margin-top:8px">T154/170 homologa campos entre Oportunidad y CyT — si la lógica de etapas de CyT cambia aquí, T154/170 debe incorporarlo. Hacer T143 primero.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li><strong>Enkontrol también avanza etapas</strong> vía <code>AvanzaEtapaENK</code> (REST). Si se implementa reversa en SF sin avisar a EK, los sistemas quedan desincronizados.</li>
+              <li>El flow <code>Progreso_CYT</code> y <code>Crear_CYT</code> deben actualizarse para permitir reversa.</li>
+              <li>Definir si la reversa se sincroniza a EK — punto crítico que Valtech no contempló en la estimación.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+13 h):</strong> <code>AvanzaEtapaENK</code> tiene 7 queries SOQL en cascada dentro de un solo método REST (riesgo de governor limits). El flow <code>Progreso_CYT</code> (418 líneas) y la estructura del objeto ya están armados — el campo <code>Reversar_etapa__c</code> existe. La complejidad real está en la lógica de reversa por perfil, la coordinación con EK (no estimada por Valtech) y el testing exhaustivo de los escenarios reversibles.</div>
+      </div></td></tr>
+
+      <!-- T133 -->
+      <tr class="ticket-row" onclick="toggle('t133')">
+        <td><div class="cell-inner"><span class="ticket-id">#133</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Envío de comisiones de EK a Salesforce</div>
+          <div class="ticket-fase">Sales Cloud · Integración Enkontrol</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">69h</span><span class="arrow">→</span><span class="new-h">87 h</span></div>
+          <span class="delta-pill delta-pos">+18 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag paralelo">Paralelo con T143</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t133">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Restablecer el flujo de integración de comisiones desde EK y garantizar consistencia de datos en Salesforce.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>La clase <code>CreacionComisiones</code> es un REST endpoint (<code>@RestResource urlMapping='/comisiones/*'</code>) que recibe el payload de EK. Ya existe y está en producción.</li>
+              <li>Usa dos objetos distintos: <code>Comision__c</code> (con estructura de pagos por tramos: anticipo, 50%, 100%) y <code>Comisiones__c</code> (registro de pago con campos de EK: <code>IdEmpresa__c</code>, <code>Agente__c</code>, <code>Etapa__c</code>).</li>
+              <li>El problema está en la lógica de reconciliación entre el <code>Catalogo_de_agentes__c</code> y los usuarios de SF — la clase ya tiene la lógica de mapeo pero falla cuando el agente EK no tiene match en SF.</li>
+              <li>El flow <code>Comision_Notificacion</code> notifica al asesor — no debe modificarse.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag paralelo">Ejecutable en paralelo con T143</span>
+            <p style="margin-top:8px">Independiente del resto de CyT. Comparte el contexto de EK con T154/170 — conviene alinear los hallazgos.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li>La clase consulta <strong>todos los usuarios</strong> en una sola query (<code>List&lt;User&gt; allUser = [Select Id,Name From User]</code>) — governor limit risk con org grande.</li>
+              <li>No hay manejo de reintentos ni DLQ si el payload de EK falla a mitad del procesamiento.</li>
+              <li>Definir qué pasa con comisiones de agentes históricos que ya no están en SF.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+28 h):</strong> <code>CreacionComisiones</code> tiene 3 problemas críticos en el código actual: (1) <code>[Select Id,Name From User]</code> sin WHERE — carga todos los usuarios al procesador, (2) <code>[Select ... From Catalogo_de_agentes__c]</code> sin LIMIT ni filtro de empresa, (3) si un solo agente falla todo el batch se rechaza — sin procesamiento parcial ni retry. El código tiene además secciones comentadas con lógica alternativa incompleta que requieren análisis y limpieza. Es uno de los frentes con más deuda técnica acumulada.</div>
+      </div></td></tr>
+
+      <!-- T173 -->
+      <tr class="ticket-row" onclick="toggle('t173')">
+        <td><div class="cell-inner"><span class="ticket-id">#173</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Ajustes de ventas desde Reservación</div>
+          <div class="ticket-fase">Sales Cloud / Vallarta · Oportunidad</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">51h</span><span class="arrow">→</span><span class="new-h">52 h</span></div>
+          <span class="delta-pill delta-pos">+1 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag paralelo">Paralelo con T157</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t173">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Permitir ajustes de venta en etapas posteriores a Reservación sin romper el flujo operativo ni la sincronización con EK.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>Los flows <code>Aprobaci_nFlujoAjusteDeVenta</code>, <code>FlujoAprobacionExpedienteAjustesDeVenta</code> y <code>Flujo_ajuste_de_ventas_contratos</code> gestionan la aprobación de ajustes. La estructura completa (objeto, layouts, 6 flows base y la clase <code>CambioEsquema</code>) ya está armada — solo hay que extender la lógica para etapas posteriores a Reservación.</li>
+              <li>El objeto <code>Ajustes_de_venta__c</code> es el registro central. Relacionado con <code>Oportunidad</code> y <code>Cotizaci_n_Asignar_Cambio_Esquema_Ajuste_de_Venta</code>.</li>
+              <li>El trigger <code>CambioEsquema_Trigger</code> y la clase <code>CambioEsquema</code> validan si la venta puede modificarse — esa misma lógica debe extenderse para los ajustes desde Reservación.</li>
+              <li>El flow <code>Ajuste_de_venta_Asignar_Esuqema_de_credito_actual</code> (hay un typo en "Esuqema") asigna el esquema vigente — relevante para Vallarta.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag paralelo">Ejecutable en paralelo con T157</span>
+            <p style="margin-top:8px">Comparte lógica de ajustes con T157 (Vallarta). Coordinación necesaria para no duplicar cambios en los mismos flows.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-medio">MEDIO</span>
+            <ul>
+              <li>Si el ajuste cambia el precio o esquema, <code>CambioEsquema</code> llama a EK vía <code>WS_ValidaPagado</code> — hay que confirmar que EK acepta ajustes en esa etapa.</li>
+              <li>Revisar que el flow de aprobación <code>Aprobaci_nFlujoAjusteDeVenta</code> no requiera al asesor de ventas original (que puede estar inactivo).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+3 h):</strong> el objeto <code>Ajustes_de_venta__c</code>, sus 4 layouts, los 6 flows de aprobación y la clase central <code>CambioEsquema</code> (362 líneas) ya están operativos. El esfuerzo se concentra en extender la lógica para etapas posteriores a Reservación, sumar las validaciones específicas y testear el callout a EK. <code>CambioEsquemaENK</code> usa <code>@future(callout=true)</code> — agrega complejidad al testing de integración.</div>
+      </div></td></tr>
+
+    </tbody>
+  </table>
+
+    </div><!-- /fase2 -->
+
+    <!-- ════════════ FASE 3 ════════════ -->
+    <div class="fase-tab-panel" id="fase3" role="tabpanel">
+    <div class="fase-label" style="margin-top:0">Fase 3 — Integraciones complejas y formatos (Mayor esfuerzo, requieren Fase 1 y 2 estabilizadas)</div>
+  <table class="ticket-table">
+    <thead>
+      <tr>
+        <th style="width:110px">Ticket</th>
+        <th>Nombre</th>
+        <th style="width:100px">Horas</th>
+        <th style="width:140px">Dependencia</th>
+        <th style="width:30px"></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- T75 -->
+      <tr class="ticket-row" onclick="toggle('t75')">
+        <td><div class="cell-inner"><span class="ticket-id">#75</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Nuevo formato de oferta de compra y contrato</div>
+          <div class="ticket-fase">Sales Cloud · Documentos / FAD</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">72h</span><span class="arrow">→</span><span class="new-h">78 h</span></div>
+          <span class="delta-pill delta-pos">+6 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Requiere T76 cerrado</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t75">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Actualizar el formato oficial de oferta de compra y contrato para Residencial y Vallarta, asegurando su uso operativo.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>Las clases involucradas: <code>Ctrl_FormatoOfertaCompra</code>, <code>Ctrl_GeneradorContrato</code>, <code>CotizadorFormato_Ctrl</code>, <code>Call_FAD_WS</code> (integración con FAD para firma electrónica), <code>DocumentManagerWizardCTRL</code>.</li>
+              <li>El objeto <code>Contratos__c</code> tiene campos para múltiples anexos (A–G), aprobaciones y firma. Relacionado con <code>Documentos__c</code>, <code>Paquete_de_Documento_FAD__c</code> y <code>Firma_del_Documento__c</code>.</li>
+              <li>El <code>CustomMetadata Credenciales_FAD.FAD</code> guarda las credenciales de la integración FAD — está configurado.</li>
+              <li>El LWC <code>agentIdFormCredYTit</code> y <code>agentIdForm</code> participan en el flujo de documentos.</li>
+              <li>El <code>Batch_ApruebaContrato</code> aprueba contratos automáticamente — puede afectarse si cambia el formato.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag bloq">Requiere T76 cerrado</span>
+            <p style="margin-top:8px">El formato de oferta de compra incluye información de promociones. Si T76 no está cerrado, el template puede quedar incompleto.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li>La integración FAD para firma electrónica puede requerir regenerar credenciales o actualizar el <code>CustomMetadata</code>.</li>
+              <li>Hay <strong>dos formatos</strong>: Residencial y Vallarta — el CustomMetadata <code>ConfiguracionEsquemas.Producto_Vallarta</code> confirma configuración diferencial. Son plantillas distintas.</li>
+              <li>Cambios en el formato de contrato requieren revisión legal de TyA — el mayor riesgo de retrabajo está en el UAT legal.</li>
+              <li>El <code>Batch_ApruebaContrato</code> (scheduled) debe probarse con el nuevo formato.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+15 h):</strong> <code>Ctrl_FormatoOfertaCompra</code> (14 líneas) y <code>Ctrl_GeneradorContrato</code> (20 líneas) son stubs — la generación de los formatos hay que armarla. <code>Call_FAD_WS</code> tiene 605 líneas de integración con FAD (firma electrónica) ya operativa, lo que reduce el trabajo de integración pero suma testing por la complejidad. Hay 2 formatos distintos (Residencial y Vallarta) y la revisión legal en UAT es el mayor generador de retrabajo en formatos de contrato.</div>
+      </div></td></tr>
+
+      <!-- T157 -->
+      <tr class="ticket-row" onclick="toggle('t157')">
+        <td><div class="cell-inner"><span class="ticket-id">#157</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Funciones especiales de Plaza Vallarta</div>
+          <div class="ticket-fase">Implementación Plaza Vallarta</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">78h</span><span class="arrow">→</span><span class="new-h">76 h</span></div>
+          <span class="delta-pill" style="background:var(--positive-100);color:var(--positive-700);border-color:var(--positive-100)">−2 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Paralelo con T173</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t157">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Corregir restricciones operativas específicas de Plaza Vallarta y alinear reglas de validación e integración con Enkontrol para ese proyecto.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>Hay configuración diferencial en el CustomMetadata <code>ConfiguracionEsquemas.Producto_Vallarta</code> (Esquema_Id = 53). Las clases <code>CambioEsquema</code>, <code>CambioEsquemaENK</code> y los flows <code>CheckProductoVallarta</code> y <code>Cotizaci_n_Asignar_Cambio_Esquema_Ajuste_de_Venta</code> leen esta configuración.</li>
+              <li>El trigger <code>CambioEsquema_Trigger</code> dispara <code>CambioEsquema</code> y <code>CambioEsquemaENK</code> que envía el cambio a EK. El flow <code>CheckProductoVallarta</code> valida el tipo de plan antes de continuar.</li>
+              <li>La integración Vallarta → Enkontrol usa el mismo endpoint base que Residencial pero con empresa/esquema diferente.</li>
+              <li>El flow <code>Ajustes_de_ventas_Cambio_titular_identificar_papeleria_completa</code> también es específico de Vallarta.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag paralelo">Ejecutable con T173</span>
+            <p style="margin-top:8px">Comparte flows de ajuste de venta con T173. Coordinar para no pisar cambios en flows compartidos.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li>Vallarta usa el <strong>esquema 53 en EK</strong> — si los cambios en SF modifican la condición del CustomMetadata, puede romper la sincronización con EK para ese proyecto.</li>
+              <li>Los tests existentes (<code>Test_CambioEsquema</code>, <code>Test_CambioEsquema_Mock</code>) deben actualizarse para cubrir los casos específicos de Vallarta.</li>
+              <li>Confirmar si el proyecto Vallarta usa el mismo org Salesforce o uno diferente — actualmente la solución está unificada.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+6 h):</strong> la base diferencial de Vallarta ya está armada — CustomMetadata <code>ConfiguracionEsquemas.Producto_Vallarta</code> con <code>Esquema_Id = 53</code>, flow <code>CheckProductoVallarta</code> y los tests <code>Test_CambioEsquema</code>/<code>Test_CambioEsquema_Mock</code> existen. <code>CambioEsquema</code> (362 líneas) tiene la lógica común con Residencial. El esfuerzo se concentra en sumar las funciones específicas, testear la cobertura diferencial y validar con el equipo de Vallarta.</div>
+      </div></td></tr>
+
+      <!-- T154/170 -->
+      <tr class="ticket-row" onclick="toggle('t154')">
+        <td><div class="cell-inner"><span class="ticket-id">#154/170</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Homologación Oportunidad/CyT y permisos de crédito</div>
+          <div class="ticket-fase">Sales Cloud · Integración EK · Mayor esfuerzo</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">104h</span><span class="arrow">→</span><span class="new-h">129 h</span></div>
+          <span class="delta-pill delta-pos">+25 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Requiere T143 y T133</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t154">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Alinear datos y reglas entre Salesforce y Enkontrol en los objetos Oportunidad y Crédito y Titulación, incluyendo permisos para operar cambios sin depender del asesor de ventas.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>Es el ticket de mayor complejidad técnica. Involucra: <code>OportunidadCalloutChain</code> (Queueable+Callouts), <code>Handler_OportunidadTrigger</code>, <code>Service_OportunidadTrigger</code> (6+ métodos), <code>Service_CreditoyTitulacionTrigger</code>, <code>AvanzaEtapaENK</code> (REST endpoint) y el trigger <code>CreditoyTitulacionTrigger</code>.</li>
+              <li>La <code>OportunidadCalloutChain</code> ya implementa una cadena de callouts asíncronos a EK (<code>EnvioPlanPago.sendInfoApartadoQueue</code> → <code>CambioEtapa.main</code>). La homologación debe ser consistente con este flujo.</li>
+              <li>El handler de Oportunidad tiene <code>preventRecursionUpdate</code> y se salta la ejecución en tests (<code>System.test.isRunningTest()</code>) — patrón que debe mantenerse.</li>
+              <li>Permisos: el Permission Set <code>Acceso_a_modificar_Oportunidades_Solo_Lectura_Coord_Exp</code> es el candidato a ajustar para los permisos de crédito.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag bloq">Requiere T143 cerrado</span>
+            <span class="dep-tag bloq">Requiere T133 estabilizado</span>
+            <p style="margin-top:8px">Si T143 cambia la lógica de etapas de CyT y T133 estabiliza el endpoint de comisiones, este ticket integra ambos. No iniciar hasta tener T143 y T133 en UAT.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag" style="background:var(--critical-100);color:var(--critical-700);">CRÍTICO</span>
+            <ul>
+              <li>La <code>OportunidadCalloutChain</code> tiene lógica de rollback si el callout a EK falla — cualquier cambio en el mapeo de campos puede romper esta cadena silenciosamente.</li>
+              <li>Este ticket toca el flujo central de ventas: Oportunidad → CyT → EK. Un bug en PRD puede bloquear todas las ventas nuevas.</li>
+              <li>Los 48 h de construcción son justos solo si el análisis funcional (13 h) produce un mapeo campo a campo exhaustivo antes de tocar código.</li>
+              <li>Requiere ventana de mantenimiento para el deploy a PRD — no hacerlo en horario de ventas.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+39 h):</strong> <code>Service_OportunidadTrigger</code> tiene 1.141 líneas con 6+ métodos (<code>separadoValidarCambioListaPrecio</code>, <code>rollBackCotizacionEstatus</code>, <code>descuentoEspecial</code>, <code>validarEstatus</code>, <code>validarCuentas</code>, <code>validaCerradaPerdida</code>, <code>validaAgenteID</code>). La cadena <code>OportunidadCalloutChain</code> → <code>EnvioPlanPago</code> → <code>CambioEtapa</code> es asíncrona (Queueable + callouts) — cualquier cambio en el mapeo puede romper el rollback silenciosamente. <code>Service_CreditoyTitulacionTrigger</code> tiene 241 líneas con lógica de perfiles compleja. Es el ticket de mayor riesgo y mayor superficie de regresión del proyecto.</div>
+      </div></td></tr>
+
+      <!-- T146 -->
+      <tr class="ticket-row" onclick="toggle('t146')">
+        <td><div class="cell-inner"><span class="ticket-id">#146</span></div></td>
+        <td><div class="cell-inner">
+          <div class="ticket-name">Integración Ecommerce → Salesforce</div>
+          <div class="ticket-fase">Sales Cloud · Integración Ecommerce · Mayor esfuerzo</div>
+        </div></td>
+        <td><div class="cell-inner">
+          <div class="re-est-badge"><span style="text-decoration:line-through;color:var(--ink-300);font-size:11px;font-family:var(--mono)">132h</span><span class="arrow">→</span><span class="new-h">152 h</span></div>
+          <span class="delta-pill delta-pos">+20 h</span>
+        </div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Requiere T26 y T76</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="t146">
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h4>Objetivo</h4>
+            <p>Definir e implementar la integración para recibir y procesar cotizaciones, oportunidades, cuentas e inventario desde el ecommerce de TyA hacia Salesforce.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Análisis técnico — ProContacto</h4>
+            <ul>
+              <li>Existen <code>HTTPMockFactory</code>, <code>HttpFormBuilder</code> y <code>Test_Callout_Mock</code> — infraestructura de mocks ya preparada para callouts, lo que sugiere que en algún momento se inició el desarrollo.</li>
+              <li>Los flows <code>Route_from_Bot_Prospecci_n_digital_web</code> y <code>Route_to_Bot_Prospecci_n_digital_web</code> ya gestionan prospectos desde web — la integración ecommerce extendería este canal. Existen además 3 flows de routing en variantes (<code>Route_from_Armonia_Mejora</code>, <code>Route_from_Armonia_Mejorado</code>, <code>Route_from_Bot_Prospeccion_digital_Mejorado</code>) que aceleran el armado del enrutamiento.</li>
+              <li>Los objetos destino: <code>Lead</code> (prospecto), <code>Opportunity</code>, <code>Account</code>, <code>Inventario__c</code> (para disponibilidad), <code>Quote</code> (cotización).</li>
+              <li>El <code>OportunidadCalloutChain</code> ya implementa el patrón de callout chain — el ecommerce debería usar el mismo patrón de entrada.</li>
+              <li>No hay clases específicas de ecommerce implementadas — la construcción es prácticamente desde cero.</li>
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Dependencias</h4>
+            <span class="dep-tag bloq">Requiere T26 resuelto</span>
+            <span class="dep-tag bloq">Requiere T76 cerrado</span>
+            <p style="margin-top:8px">Si el flujo de prospectos falla (T26) y las promociones no están correctas (T76), el ecommerce recibirá datos incorrectos. Además, si T154/170 está en curso, coordinar para no pisar el trigger de Oportunidad.</p>
+          </div>
+          <div class="detail-section">
+            <h4>Riesgos técnicos</h4>
+            <span class="risk-tag risk-alto">ALTO</span>
+            <ul>
+              <li>Es el ticket de mayor esfuerzo (132 h) y el que más depende de terceros — el equipo de ecommerce de TyA debe tener el contrato de datos definido antes de iniciar construcción.</li>
+              <li>Idempotencia: si el ecommerce reenvía el mismo prospecto dos veces, el flow <code>Check_prospecto_duplicado_por_proyecto</code> debe cubrir ese escenario.</li>
+              <li>El inventario en tiempo real es el mayor riesgo — <code>Inventario__c</code> se actualiza desde EK, no desde SF, por lo que puede haber desfase.</li>
+              <li>La estimación de 61 h en construcción asume que el contrato de datos está 100% definido al iniciar.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evidence-box"><strong>Evidencia de re-estimación (+35 h):</strong> <code>HTTPMockFactory</code> tiene solo 22 líneas — infraestructura mínima, no hay servicios de recepción implementados. No existe ninguna clase específica de ecommerce. La construcción es prácticamente desde cero. Hay 3 flows de routing (variantes <code>Mejora/Mejorado</code>) que pueden reusarse como punto de entrada. El contrato de datos con el equipo de ecommerce, las pruebas end-to-end con dos equipos coordinados y la cobertura de duplicados/reintentos son los rubros más demandantes.</div>
+      </div></td></tr>
+
+    </tbody>
+  </table>
+
+    </div><!-- /fase3 -->
+  </div><!-- /fase-tabs -->
+
+  <!-- ════════════ CONSOLIDADO ════════════ -->
+  <div class="consolidado collapsible">
+    <h3 class="collapsible-header" onclick="toggleSection(this)">Consolidado Bloque A · Issues por categoría<span class="toggle-arrow">▼</span></h3>
+    <div class="collapsible-content">
+    <table class="comp-table" style="margin-bottom:20px">
+      <thead><tr><th>Categoría</th><th>Valtech</th><th>ProContacto</th><th>Delta</th></tr></thead>
+      <tbody>
+        <tr><td>Identificación de piezas</td><td class="val-h">25 h</td><td class="pro-h">31 h</td><td class="delta-up">+6 h</td></tr>
+        <tr><td>Análisis funcional/técnico</td><td class="val-h">100 h</td><td class="pro-h">120 h</td><td class="delta-up">+20 h</td></tr>
+        <tr><td>Construcción / Desarrollo</td><td class="val-h">324 h</td><td class="pro-h">311 h</td><td style="color:var(--positive-700);font-weight:600">−13 h</td></tr>
+        <tr><td>Testing (unitario, integración, regresión)</td><td class="val-h">141 h</td><td class="pro-h">172 h</td><td class="delta-up">+31 h</td></tr>
+        <tr><td>UAT y ajustes</td><td class="val-h">93 h</td><td class="pro-h">111 h</td><td class="delta-up">+18 h</td></tr>
+        <tr><td>Migración a PRD</td><td class="val-h">62 h</td><td class="pro-h">76 h</td><td class="delta-up">+14 h</td></tr>
+        <tr><td>Handover</td><td class="val-h">11 h</td><td class="pro-h">11 h</td><td class="delta-eq">0 h</td></tr>
+        <tr class="total-row"><td><strong>TOTAL Bloque A</strong></td><td><strong>756 h</strong></td><td><strong>832 h</strong></td><td class="delta-up"><strong>+76 h (+10%)</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="cons-grid">
+      <div class="cons-item"><div class="c-num">31 h</div><div class="c-lbl">Identificación de piezas</div></div>
+      <div class="cons-item"><div class="c-num">120 h</div><div class="c-lbl">Análisis funcional/técnico</div></div>
+      <div class="cons-item"><div class="c-num">311 h</div><div class="c-lbl">Construcción / Desarrollo</div></div>
+      <div class="cons-item"><div class="c-num">172 h</div><div class="c-lbl">Testing</div></div>
+      <div class="cons-item"><div class="c-num">111 h</div><div class="c-lbl">UAT y ajustes</div></div>
+      <div class="cons-item"><div class="c-num">76 h</div><div class="c-lbl">Migración a PRD</div></div>
+      <div class="cons-item"><div class="c-num">11 h</div><div class="c-lbl">Handover</div></div>
+      <div class="cons-item cons-total"><div class="c-num">832 h</div><div class="c-lbl">Total Bloque A · Issues</div></div>
+    </div>
+
+    <div style="margin-top:24px; padding:16px; background:var(--azul-light); border-radius:8px; font-size:13px;">
+      <strong style="color:var(--azul)">Orden de ejecución recomendado:</strong>
+      <br><br>
+      <strong>Fase 1</strong> (paralelo): T26 (47h) + T174 (60h) + T76 (40h) + T79 (52h) · <em>199 h</em><br>
+      <strong>Fase 2</strong> (T26/T174 en pruebas): T143 (62h) + T133 (87h) + T173 (49h) · <em>198 h</em><br>
+      <strong>Fase 3</strong> (Fases 1–2 en UAT): T75 (78h) + T157 (76h) + T154/170 (129h) + T146 (152h) · <em>435 h</em>
+      <br><br>
+      <strong style="color:var(--rojo)">Principales detonadores de variación:</strong> contrato de datos ecommerce sin cerrar (T146) · revisión legal TyA en formatos (T75) · decisión de sincronización reversa con EK (T143) · scope UAT de T154/170 (ticket de mayor riesgo).
+    </div>
+    </div><!-- /collapsible-content -->
+  </div>
+
+    </div><!-- /blockA -->
+
+    <div class="bloque-panel" id="blockB">
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       BLOQUE B · PRE-TRABAJO DE LIMPIEZA — 113 h
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="block-divider">
+    <div class="block-divider-num">Bloque B</div>
+    <div class="block-divider-title">Pre-trabajo de limpieza y organización</div>
+    <div class="block-divider-meta">9 frentes · 113 h · 15% sobre Valtech (756 h) · pre-trabajo bloqueante para arrancar el Bloque A</div>
+  </div>
+
+  <!-- Resumen del ambiente para Bloque B -->
+  <div class="exec-card collapsible">
+    <h3 class="collapsible-header" onclick="toggleSection(this)">Estado actual del ambiente — diagnóstico para limpieza<span class="toggle-arrow">▼</span></h3>
+    <div class="collapsible-content">
+    <div class="exec-grid">
+      <div class="exec-item">
+        <div class="num">280</div>
+        <div class="lbl">Campos en Lead · 47 flows activos</div>
+      </div>
+      <div class="exec-item">
+        <div class="num">335</div>
+        <div class="lbl">Campos en Account · 8 flows activos</div>
+      </div>
+      <div class="exec-item warn">
+        <div class="num">98</div>
+        <div class="lbl">Campos en Lead candidatos a eliminar (35%)</div>
+      </div>
+      <div class="exec-item">
+        <div class="num">14</div>
+        <div class="lbl">Apex Triggers · 4 fuera de patrón</div>
+      </div>
+      <div class="exec-item warn">
+        <div class="num">49</div>
+        <div class="lbl">Flows sin control de recursión (causa BUG T174)</div>
+      </div>
+      <div class="exec-item warn">
+        <div class="num">437</div>
+        <div class="lbl">Total campos a depurar en todos los objetos</div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- ════════════ TABS DE FASES BLOQUE B ════════════ -->
+  <div class="fase-tabs">
+    <div class="fase-tabs-nav" role="tablist">
+      <button class="fase-tab-btn active" type="button" onclick="switchFaseB('faseB1')" role="tab">
+        <span class="fase-tab-num">B · Fase 1</span>
+        Validación y limpieza de datos
+        <span class="fase-tab-hours">46 h</span>
+      </button>
+      <button class="fase-tab-btn" type="button" onclick="switchFaseB('faseB2')" role="tab">
+        <span class="fase-tab-num">B · Fase 2</span>
+        Refactor de código
+        <span class="fase-tab-hours">49 h</span>
+      </button>
+      <button class="fase-tab-btn" type="button" onclick="switchFaseB('faseB3')" role="tab">
+        <span class="fase-tab-num">B · Fase 3</span>
+        Consolidación y UX
+        <span class="fase-tab-hours">18 h</span>
+      </button>
+    </div>
+
+    <!-- B Fase 1 -->
+    <div class="fase-tab-panel active" id="faseB1" role="tabpanel">
+    <div class="fase-label">B · Fase 1 — Validación con negocio y limpieza de datos (46 h)</div>
+  <table class="ticket-table">
+    <thead>
+      <tr><th style="width:90px">Frente</th><th>Acción de limpieza</th><th style="width:80px">Horas</th><th style="width:140px">Tipo</th><th style="width:30px"></th></tr>
+    </thead>
+    <tbody>
+
+      <tr class="ticket-row" onclick="toggle('f1-1')">
+        <td><div class="cell-inner"><span class="ticket-id">F1·1</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Validación con negocio de campos a depurar</div><div class="ticket-fase">Sesiones con áreas usuarias · Hito de arranque</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">7 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag critico">Bloqueante</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f1-1">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Validar con áreas usuarias cuáles de los ~437 campos identificados como <em>Nunca Usado</em> o <em>Muy Poco Uso</em> pueden eliminarse efectivamente, y cuáles tienen caso de uso futuro reservado.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Sesión con <strong>Luis Ávila</strong> (Lead): revisión de los 98 candidatos.</li><li>Sesión con <strong>Logan</strong> (Account · Opportunity · Quote).</li><li>Sesiones con áreas operativas (Marketing, CyT, Comisiones).</li><li>Salida formal: CSV con marca por campo + acta firmada.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag critico">Bloquea F1·2 y F1·3</span><p style="margin-top:8px">Sin esta validación no se puede generar el <code>destructiveChanges.xml</code>.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-medio">MEDIO</span><ul><li>Indisponibilidad de Luis o Logan retrasa toda la Fase 1.</li><li>Marketing puede pedir reservar campos para "futuro lanzamiento".</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Salida esperada:</strong> CSV final con cada uno de los ~437 candidatos marcado como ELIMINAR, RENOMBRAR o RESERVAR con razón documentada. Acta de decisión firmada por TyA.</div>
+      </div></td></tr>
+
+      <tr class="ticket-row" onclick="toggle('f1-2')">
+        <td><div class="cell-inner"><span class="ticket-id">F1·2</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Depuración de campos en Lead</div><div class="ticket-fase">Núcleo operativo · 280 campos → ~182</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">21 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag libre">Eliminar</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f1-2">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Eliminar 98 campos de Lead identificados como Nunca Usado (52) y Muy Poco Uso (46) sobre 507.539 registros — equivalente al <strong>35% del modelo</strong>.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Construir <code>destructiveChanges.xml</code>.</li><li>Migrar o eliminar validation rules dependientes.</li><li>Limpiar layouts y page assignments.</li><li>Auditar referencias en flows, Apex y reports.</li><li>Validar en sandbox con dataset productivo.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Requiere F1·1</span><p style="margin-top:8px">Habilita la consolidación de flows en F3·1.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-alto">ALTO</span><ul><li>Campo eliminado con referencia oculta rompe automatización.</li><li>Marketing Cloud puede tener landing pages apuntando a campos no detectados.</li><li>Integraciones externas pueden referenciar campos legacy.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Métricas:</strong> 280 campos · 134 Uso Intensivo (47.9%) · 52 Nunca Usado · 46 Muy Poco Uso. Reducción: <strong>280 → 182 campos</strong>. Fuente: <code>field-usage-analyzer</code> en producción.</div>
+      </div></td></tr>
+
+      <tr class="ticket-row" onclick="toggle('f1-3')">
+        <td><div class="cell-inner"><span class="ticket-id">F1·3</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Depuración de Account y objetos minor</div><div class="ticket-fase">Account · Opportunity · Quote · Contact · otros</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">18 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag libre">Eliminar</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f1-3">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Eliminar 181 campos de Account heredados del acelerador Sales Cloud + ~135 campos en Opportunity, Quote, Contact y otros (≈316 campos).</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Account: depurar campos legacy sobre 61.010 registros.</li><li>Opportunity: ~40 campos sin uso — coordinación con <code>Service_OportunidadTrigger</code>.</li><li>Quote: ~25 campos sin uso.</li><li>Contact, Case y otros: ~70 campos.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Requiere F1·1</span><span class="dep-tag paralelo">Paralelo con F1·2</span><p style="margin-top:8px">Prerrequisito para refactor de comisiones (BUG T133).</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-alto">ALTO</span><ul><li>Account es referencia principal de Opportunity.</li><li>Fórmulas de Opportunity pueden depender de campos "Poco Uso".</li><li>Person Account: campos <code>__pc</code> requieren validación específica.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Métricas:</strong> Account 335 / 181 candidatos · Opportunity ~120 / ~40 · Quote ~85 / ~25 · otros ~250 / ~70. Reducción: <strong>~316 campos eliminados</strong>.</div>
+      </div></td></tr>
+
+    </tbody>
+  </table>
+    </div><!-- /faseB1 -->
+
+    <!-- B Fase 2 -->
+    <div class="fase-tab-panel" id="faseB2" role="tabpanel">
+    <div class="fase-label" style="margin-top:0">B · Fase 2 — Refactor de código (49 h)</div>
+  <table class="ticket-table">
+    <thead>
+      <tr><th style="width:90px">Frente</th><th>Acción de limpieza</th><th style="width:80px">Horas</th><th style="width:140px">Tipo</th><th style="width:30px"></th></tr>
+    </thead>
+    <tbody>
+
+      <tr class="ticket-row" onclick="toggle('f2-1')">
+        <td><div class="cell-inner"><span class="ticket-id">F2·1</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Normalización de Apex Triggers fuera de patrón</div><div class="ticket-fase">4 triggers desviados del Handler/Service estándar</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">14 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag paralelo">Refactor</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f2-1">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Normalizar los 4 triggers fuera del patrón Handler/Service y corregir naming bugs en otros 2. De 14 triggers totales, 10 ya cumplen el patrón.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li><code>CandidatosTrigger</code> está <strong>comentado</strong>. Decisión: deprecar o reactivar.</li><li><code>ComentariosExpedienteTrigger</code> ejecuta SOQL en <em>for-loop</em>.</li><li><code>Cambio_Titular_Trigger</code> y <code>CambioEsquema_Trigger</code> sin Handler ni recursión.</li><li>Naming bugs en <code>OportunidadTrigger</code> y <code>CreditoyTitulacionTrigger</code>.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Bloquea F2·2</span><p style="margin-top:8px">Bloqueante para BUG T174 y estabilidad de Ajustes_de_venta.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-alto">ALTO</span><ul><li>Reactivar <code>CandidatosTrigger</code> requiere tests nuevos y revisión de 47 flows de Lead.</li><li>Bulkificar <code>ComentariosExpedienteTrigger</code> implica regresión completa.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Estado:</strong> 14 triggers · 10 con patrón Handler/Service · 4 con desviaciones críticas · 2 con naming bugs.</div>
+      </div></td></tr>
+
+      <tr class="ticket-row" onclick="toggle('f2-2')">
+        <td><div class="cell-inner"><span class="ticket-id">F2·2</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Control de recursión en flows críticos</div><div class="ticket-fase">Causa raíz BUG T174 · 49 flows sin protección</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">26 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag critico">Crítico</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f2-2">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Implementar control de recursión equivalente a <code>preventRecursionUpdate</code> en los 49 flows record-triggered sobre Lead y Opportunity. <strong>Causa raíz del BUG T174</strong>.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Auditar los 49 flows.</li><li>Implementar guards before/after-save consistentes.</li><li>Alinear con el patrón ya implementado en triggers.</li><li>Probar en sandbox replicando el escenario de CPU exceeded.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Requiere F2·1</span><p style="margin-top:8px">Frente más bloqueante. Sin esto, el Bloque A no arranca seguro.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-alto">ALTO</span><ul><li>49 flows = matriz de regresión amplia.</li><li>Algunos flows pueden tener recursión legítima.</li><li>Integraciones EK pueden romper guards básicos.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Hallazgo crítico:</strong> resolver este frente cierra automáticamente el BUG T174 (T174 está en el Bloque A · Fase 1) y estabiliza la cadena <code>OportunidadCalloutChain</code>.</div>
+      </div></td></tr>
+
+      <tr class="ticket-row" onclick="toggle('f2-3')">
+        <td><div class="cell-inner"><span class="ticket-id">F2·3</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Eliminación de código muerto</div><div class="ticket-fase">Apex · flows · tests sin uso</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">9 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag libre">Eliminar</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f2-3">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Eliminar código y configuración muertos que aumentan deuda técnica.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li><code>CandidatosTrigger</code> comentado → eliminar Handler y Service si se confirma deprecación.</li><li>Flow <code>Prueba_CyT</code> desactivado y otros sin actividad.</li><li>Métodos comentados en <code>CreacionComisiones</code>.</li><li>Test classes que apuntan a métodos eliminados.</li><li>Validation rules sobre campos eliminados en F1·2 / F1·3.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag paralelo">Paralelo con F2·1 y F2·2</span><p style="margin-top:8px">Mejor al final de la Fase 2 para no interferir con el refactor.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-medio">MEDIO</span><ul><li>Métodos comentados pueden ser referencia para futuro.</li><li>Test coverage puede caer.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Beneficio:</strong> reducción de superficie de análisis para equipos futuros, mejor lectura del repo.</div>
+      </div></td></tr>
+
+    </tbody>
+  </table>
+    </div><!-- /faseB2 -->
+
+    <!-- B Fase 3 -->
+    <div class="fase-tab-panel" id="faseB3" role="tabpanel">
+    <div class="fase-label" style="margin-top:0">B · Fase 3 — Consolidación de flows y UX (18 h)</div>
+  <table class="ticket-table">
+    <thead>
+      <tr><th style="width:90px">Frente</th><th>Acción de limpieza</th><th style="width:80px">Horas</th><th style="width:140px">Tipo</th><th style="width:30px"></th></tr>
+    </thead>
+    <tbody>
+
+      <tr class="ticket-row" onclick="toggle('f3-1')">
+        <td><div class="cell-inner"><span class="ticket-id">F3·1</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Consolidación de flows en Lead</div><div class="ticket-fase">47 flows actuales → ~20 flows operativos</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">29 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Consolidar</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f3-1">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Reducir los 47 flows record-triggered sobre Lead a ~20 flows operativos consolidando duplicidades.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Identificar flows que actualizan los mismos campos en sucesión.</li><li>Consolidar lógica de asignación, eventos, lead scoring, vigencia, chatbot.</li><li>Coordinar con sesión 3 KT con Luis Ávila.</li><li>Documentar mapa final de flows.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Requiere F1·2 y F2·2</span><p style="margin-top:8px">No tiene sentido consolidar mientras se eliminan campos.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-medio">MEDIO</span><ul><li>Fusión mal hecha puede ocultar errores en flows individuales.</li><li>Equipos operativos pueden depender de flows específicos para casos edge.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Métricas:</strong> 47 flows actuales · ratio 11 flows por trigger es alto. Reducción objetivo: <strong>−57% de flows en Lead</strong>.</div>
+      </div></td></tr>
+
+      <tr class="ticket-row" onclick="toggle('f3-2')">
+        <td><div class="cell-inner"><span class="ticket-id">F3·2</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Consolidación de flows en Opportunity</div><div class="ticket-fase">33 flows → ~15 flows · solapamiento con trigger 1.141 líneas</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">5 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag bloq">Consolidar</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f3-2">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Reducir los 33 flows sobre Opportunity a ~15 flows.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Análisis del solapamiento triggers Apex / flows after-save.</li><li>Mover lógica de flow a Apex (o viceversa) según corresponda.</li><li>Mantener cadena <code>OportunidadCalloutChain</code> intacta.</li><li>Documentar mapeo final.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Requiere F1·3 y F2·2</span><p style="margin-top:8px">Bloqueante por limpieza de campos en Opportunity y refactor de recursión.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-alto">ALTO</span><ul><li>Opportunity es el corazón de la cadena de venta.</li><li>Solapamiento con Service_OportunidadTrigger requiere análisis técnico.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Métricas:</strong> 33 flows · 1.141 líneas en Service_OportunidadTrigger · cadena async con 3 callouts a EK. Reducción: <strong>−55% de flows en Opportunity</strong>.</div>
+      </div></td></tr>
+
+      <tr class="ticket-row" onclick="toggle('f3-3')">
+        <td><div class="cell-inner"><span class="ticket-id">F3·3</span></div></td>
+        <td><div class="cell-inner"><div class="ticket-name">Rediseño de layouts y handover</div><div class="ticket-fase">Lead 30 secciones → 10 · Account · documentación final</div></div></td>
+        <td><div class="cell-inner"><span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink-900);">4 h</span></div></td>
+        <td><div class="cell-inner"><span class="dep-tag paralelo">UX y cierre</span></div></td>
+        <td><div class="cell-inner"><span class="chevron">▼</span></div></td>
+      </tr>
+      <tr class="detail-row"><td colspan="5"><div class="detail-inner" id="f3-3">
+        <div class="detail-grid">
+          <div class="detail-section"><h4>Objetivo</h4><p>Cerrar el pre-trabajo con la reorganización de layouts y la documentación necesaria para el arranque del Bloque A.</p></div>
+          <div class="detail-section"><h4>Tareas</h4><ul><li>Lead: consolidar layout de 30 secciones a 10 secciones operativas.</li><li>Account: limpiar secciones legacy del acelerador Sales Cloud.</li><li>Actualizar AGENTS.md y README del repo.</li><li>Acta de handover formal hacia el Bloque A.</li></ul></div>
+          <div class="detail-section"><h4>Dependencias</h4><span class="dep-tag bloq">Requiere fases anteriores</span><p style="margin-top:8px">Cierre del pre-trabajo.</p></div>
+          <div class="detail-section"><h4>Riesgos</h4><span class="risk-tag risk-bajo">BAJO</span><ul><li>Layouts pueden requerir validación con áreas usuarias antes de publicar.</li></ul></div>
+        </div>
+        <div class="evidence-box"><strong>Cierre del pre-trabajo:</strong> con esta entrega el ambiente queda listo para iniciar el Bloque A (832 h) sin deuda técnica acumulada que comprometa la estabilidad.</div>
+      </div></td></tr>
+
+    </tbody>
+  </table>
+    </div><!-- /faseB3 -->
+  </div><!-- /fase-tabs B -->
+
+  <!-- ════════════ CONSOLIDADO BLOQUE B ════════════ -->
+  <div class="consolidado collapsible">
+    <h3 class="collapsible-header" onclick="toggleSection(this)">Consolidado Bloque B · Pre-trabajo por fase<span class="toggle-arrow">▼</span></h3>
+    <div class="collapsible-content">
+    <table class="comp-table" style="margin-bottom:20px">
+      <thead><tr><th>Fase</th><th>Frente</th><th>Acción</th><th>Horas</th></tr></thead>
+      <tbody>
+        <tr><td><strong>B · Fase 1</strong></td><td>F1·1</td><td>Validación con negocio</td><td class="pro-h">7 h</td></tr>
+        <tr><td><strong>B · Fase 1</strong></td><td>F1·2</td><td>Depuración de campos en Lead</td><td class="pro-h">21 h</td></tr>
+        <tr><td><strong>B · Fase 1</strong></td><td>F1·3</td><td>Depuración de Account y otros</td><td class="pro-h">18 h</td></tr>
+        <tr><td><strong>B · Fase 2</strong></td><td>F2·1</td><td>Normalización de Apex Triggers</td><td class="pro-h">14 h</td></tr>
+        <tr><td><strong>B · Fase 2</strong></td><td>F2·2</td><td>Control de recursión en flows</td><td class="pro-h">26 h</td></tr>
+        <tr><td><strong>B · Fase 2</strong></td><td>F2·3</td><td>Eliminación de código muerto</td><td class="pro-h">9 h</td></tr>
+        <tr><td><strong>B · Fase 3</strong></td><td>F3·1</td><td>Consolidación flows en Lead</td><td class="pro-h">9 h</td></tr>
+        <tr><td><strong>B · Fase 3</strong></td><td>F3·2</td><td>Consolidación flows en Opportunity</td><td class="pro-h">5 h</td></tr>
+        <tr><td><strong>B · Fase 3</strong></td><td>F3·3</td><td>Rediseño de layouts y handover</td><td class="pro-h">4 h</td></tr>
+        <tr class="total-row"><td colspan="3"><strong>TOTAL Bloque B</strong></td><td><strong>113 h</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="cons-grid">
+      <div class="cons-item"><div class="c-num">46 h</div><div class="c-lbl">B · Fase 1 — Validación y limpieza de datos</div></div>
+      <div class="cons-item"><div class="c-num">49 h</div><div class="c-lbl">B · Fase 2 — Refactor de código</div></div>
+      <div class="cons-item"><div class="c-num">18 h</div><div class="c-lbl">B · Fase 3 — Consolidación y UX</div></div>
+      <div class="cons-item cons-total"><div class="c-num">113 h</div><div class="c-lbl">Total Bloque B · Pre-trabajo</div></div>
+    </div>
+    </div>
+  </div>
+
+    </div><!-- /blockB -->
+  </div><!-- /bloque-tabs-main -->
+
+  <!-- ════════════ CONSOLIDADO INTEGRAL ════════════ -->
+  <div class="consolidado collapsible" style="border-top:2px solid var(--brand-700);background:var(--brand-050);">
+    <h3 class="collapsible-header" onclick="toggleSection(this)">Consolidado integral — Bloque A + Bloque B<span class="toggle-arrow">▼</span></h3>
+    <div class="collapsible-content">
+    <table class="comp-table" style="margin-bottom:20px">
+      <thead><tr><th>Bloque</th><th>Descripción</th><th>Base</th><th>Buffer</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Bloque A · Issues</strong></td><td>Re-estimación de los 11 tickets del proyecto formal</td><td class="pro-h">756 h</td><td>+10%</td><td class="pro-h"><strong>832 h</strong></td></tr>
+        <tr><td><strong>Bloque B · Pre-trabajo</strong></td><td>Limpieza y organización del ambiente</td><td class="pro-h">—</td><td>+15% de Valtech</td><td class="pro-h"><strong>113 h</strong></td></tr>
+        <tr class="total-row"><td colspan="2"><strong>TOTAL INTEGRAL</strong></td><td><strong>756 h</strong></td><td><strong>+189 h (+25%)</strong></td><td><strong>945 h</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="cons-grid">
+      <div class="cons-item"><div class="c-num">832 h</div><div class="c-lbl">Bloque A · Issues</div></div>
+      <div class="cons-item"><div class="c-num">113 h</div><div class="c-lbl">Bloque B · Pre-trabajo</div></div>
+      <div class="cons-item cons-total"><div class="c-num">945 h</div><div class="c-lbl">Total integral · vs Valtech 756 h (+189 h · +25%)</div></div>
+    </div>
+
+    <div style="margin-top:24px; padding:16px; background:var(--surface); border-radius:4px; font-size:13px; border:1px solid var(--ink-200);">
+      <strong style="color:var(--brand-900);font-family:var(--serif);font-size:14px;">Secuencia recomendada</strong>
+      <br><br>
+      <strong>1.</strong> Arrancar con <strong>Bloque B</strong> (113 h) — pre-trabajo de limpieza es prerequisito para la estabilidad del Bloque A.<br>
+      <strong>2.</strong> Una vez completada la <strong>B · Fase 2</strong> (control de recursión), <strong>Bloque A</strong> puede comenzar en paralelo con B · Fase 3.<br>
+      <strong>3.</strong> Cierre y handover formal al final del Bloque A.
+      <br><br>
+      <strong style="color:var(--critical-700);">Bloqueante crítico:</strong> sin completar el frente <strong>B · F2·2</strong> (control de recursión en 49 flows), el Bloque A no puede arrancar de manera segura — los problemas de CPU time exceeded persistirían en producción durante el proyecto formal.
+    </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  ProContacto · Plan Integral Salesforce TyA · Abril 2026 · <strong>945 h</strong> (Issues 832 h + Pre-trabajo 113 h) · vs Valtech 756 h (+189 h · +25%)
+</div>
+
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id);
+    const row = el.closest('.detail-row').previousElementSibling;
+    const isOpen = el.classList.contains('open');
+    // Cerrar todos
+    document.querySelectorAll('.detail-inner').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('expanded'));
+    // Abrir si estaba cerrado
+    if (!isOpen) {
+      el.classList.add('open');
+      row.classList.add('expanded');
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function toggleSection(header) {
+    header.closest('.collapsible').classList.toggle('collapsed');
+  }
+
+  function switchBloque(blockId) {
+    document.querySelectorAll('.bloque-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.bloque-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(blockId).classList.add('active');
+    const idx = { blockA: 0, blockB: 1 }[blockId];
+    document.querySelectorAll('.bloque-tab-btn')[idx].classList.add('active');
+    document.querySelectorAll('.detail-inner').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('expanded'));
+  }
+
+  function switchFaseB(faseId) {
+    const block = document.getElementById(faseId).closest('.fase-tabs');
+    block.querySelectorAll('.fase-tab-panel').forEach(p => p.classList.remove('active'));
+    block.querySelectorAll('.fase-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(faseId).classList.add('active');
+    const idx = { faseB1: 0, faseB2: 1, faseB3: 2 }[faseId];
+    block.querySelectorAll('.fase-tab-btn')[idx].classList.add('active');
+    document.querySelectorAll('.detail-inner').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('expanded'));
+  }
+
+  function switchFase(faseId) {
+    const block = document.getElementById(faseId).closest('.fase-tabs');
+    block.querySelectorAll('.fase-tab-panel').forEach(p => p.classList.remove('active'));
+    block.querySelectorAll('.fase-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(faseId).classList.add('active');
+    const idx = { fase1: 0, fase2: 1, fase3: 2 }[faseId];
+    block.querySelectorAll('.fase-tab-btn')[idx].classList.add('active');
+    // Cerrar cualquier card expandida al cambiar de fase
+    document.querySelectorAll('.detail-inner').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('expanded'));
+  }
+</script>
+</body>
+</html>
